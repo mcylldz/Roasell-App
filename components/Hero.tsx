@@ -16,29 +16,29 @@ const Hero: React.FC = () => {
           <div className="space-y-10 max-w-2xl relative z-10">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass border-blue-500/20 text-blue-400 text-[10px] font-bold mono tracking-widest uppercase">
               <ShieldAlert size={12} className="animate-pulse" />
-              SİSTEM DURUMU: KARAR KORUMA VE DENETİM MODU AKTİF
+              Dijital Emniyet Kemeri: ROASELL APP
             </div>
 
             <div className="space-y-6">
               <h1 className="text-5xl lg:text-[80px] font-extrabold tracking-tighter leading-[0.95] text-white">
-                Shopify'a doğru başlayın. <br />
-                <span className="text-zinc-600">Sermayenizi koruyun.</span>
+                Ticaretinizi Doğru Yönetin. <br />
+                <span className="text-zinc-600">Sermayenizi Koruyun.</span>
               </h1>
 
               <div className="space-y-4">
                 <p className="text-xl text-zinc-400 leading-relaxed font-medium border-l-2 border-blue-600/50 pl-8 max-w-xl">
-                  RoaSell, karar vermeden önce sizi koruyan bir başlangıç sistemidir. Yanlış ürün seçerek bütçenizi yakmanızı önlemek için <span className="text-white font-bold underline decoration-blue-500/50">veriye dayalı yönlendirme</span> yapar, Shopify altyapınızdaki teknik hataları engeller ve kontrollü büyümenizi sağlar.
+                  RoaSell, reklam yönetme sürecinizde sizi kimseye bağlı kalmadan kendi reklamlarınızı yönetebilir hale getirir. 7 yıllık tecrübe ile beslediğimiz algoritmamız sayesinde kampanya düzeyinden en ufak reklam düzeyine kadar almanız gereken aksiyonları size söyler.
                 </p>
                 <div className="flex items-center gap-2 pl-8 text-blue-400 font-bold text-sm italic">
                   <Shield size={16} />
-                  <span>RoaSell, başlamadan önce hata yapmanızı engellemek için tasarlanmıştır.</span>
+                  <span>Roasell, online ticaretinizde hatasız bir reklam yönetim süreci sürdürmek için tasarlanmıştır.</span>
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-5 pt-4">
               <button className="group relative px-10 py-5 bg-white text-black font-black rounded-xl flex items-center justify-center gap-3 hover:scale-105 transition-all shadow-[0_0_30px_rgba(255,255,255,0.1)] active:scale-95">
-                VERİYE DAYALI ADIM ATIN
+                ALGORİTMAYI ŞİMDİ ENTEGRE ET
                 <ArrowRight className="group-hover:translate-x-1 transition-transform" size={22} />
               </button>
               
@@ -50,9 +50,9 @@ const Hero: React.FC = () => {
 
             <div className="flex flex-wrap items-center gap-8 pt-4">
                {[
-                 { icon: <ShieldCheck size={16} />, label: "DOĞRULANMIŞ SEÇİM" },
-                 { icon: <Zap size={16} />, label: "DENETİMLİ ALTYAPI" },
-                 { icon: <Activity size={16} />, label: "KADEMELİ BÜYÜME" }
+                 { icon: <ShieldCheck size={16} />, label: "7 YILLIK VERİ" },
+                 { icon: <Zap size={16} />, label: "HIZLI AKSİYON" },
+                 { icon: <Activity size={16} />, label: "ROI+ BÜYÜME" }
                ].map((item, i) => (
                  <div key={i} className="flex items-center gap-2 text-[10px] font-black mono text-zinc-500 uppercase tracking-[0.2em]">
                    <span className="text-emerald-500">{item.icon}</span>
@@ -74,7 +74,7 @@ const Hero: React.FC = () => {
                  <div className="space-y-1">
                    <div className="flex items-center gap-2">
                      <div className="w-2 h-2 rounded-full bg-blue-500 animate-ping" />
-                     <span className="text-[10px] font-black mono text-zinc-500 uppercase tracking-widest">Shopify Denetim Terminali // v2.5</span>
+                     <span className="text-[10px] font-black mono text-zinc-500 uppercase tracking-widest">Hızlı Başlangıç Planı;</span>
                    </div>
                    <h3 className="text-2xl font-black tracking-tight uppercase italic">Risk Kontrol Paneli</h3>
                  </div>
@@ -88,9 +88,9 @@ const Hero: React.FC = () => {
                  <div className="absolute left-[19px] top-6 bottom-6 w-[2px] bg-gradient-to-b from-blue-500 via-zinc-800 to-zinc-900" />
 
                  {[
-                   { step: "01", label: "Ürün Doğrulama", sub: "Tahmin değil, pazar verisi", status: "KONTROL EDİLDİ", color: "text-emerald-400", active: true },
-                   { step: "02", label: "Shopify Denetimi", sub: "Altyapı hataları engellendi", status: "KORUMALI", color: "text-blue-400", active: true },
-                   { step: "03", label: "Satış Analizi", sub: "Verimsiz bütçe taranıyor...", status: "İZLENİYOR", color: "text-zinc-600", active: false }
+                   { step: "01", label: "MAĞAZANI BAĞLA", sub: "Mağaza verilerini entegre et (opsiyonel)", status: "KONTROL EDİLDİ", color: "text-emerald-400", active: true },
+                   { step: "02", label: "META REKLAM HESABINI BAĞLA", sub: "Algoritmaya kendini tanıt", status: "KORUMALI", color: "text-blue-400", active: true },
+                   { step: "03", label: "REKLAM ANALİNİZİ BAŞLAT", sub: "Reklam verilerin algoritma ile karşılaştırılıyor...", status: "İZLENİYOR", color: "text-zinc-600", active: false }
                  ].map((item, i) => (
                    <div key={i} className={`relative flex items-center gap-6 p-5 rounded-2xl border transition-all duration-500 ${item.active ? 'bg-white/5 border-white/10' : 'bg-transparent border-white/5 opacity-40'}`}>
                       <div className={`w-10 h-10 rounded-full flex items-center justify-center font-black mono text-sm z-10 ${item.active ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]' : 'bg-zinc-800 text-zinc-600'}`}>
@@ -109,10 +109,10 @@ const Hero: React.FC = () => {
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.05] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                   <div className="flex items-center gap-3 mb-3">
                     <Zap className="text-blue-400" size={16} />
-                    <span className="text-xs font-black text-blue-400 uppercase tracking-widest">Sistem Analizi</span>
+                    <span className="text-xs font-black text-blue-400 uppercase tracking-widest">İPUCU;</span>
                   </div>
                   <p className="text-sm text-zinc-300 leading-relaxed font-bold italic">
-                    "Şu an ABD pazarında <span className="text-white">Isıtmalı Göz Maskesi</span> talebi yüksek ve <span className="text-emerald-400 font-black">dönüşüm oranı %2</span>. TR pazarında veriler <span className="text-blue-400 font-bold underline">henüz doygunluğa ulaşılmadığını</span> gösteriyor. Shopify mağazanız için mantıklı bir başlangıç noktası."
+                    Roasell açık kaynaklı bir reklam analiz aracı değildir. 7 Yıllık E-Ticaret verileriyle eğitilmiş gerçek sektörel hafızaya sahip sürekli güncellenen, veri ağını büyüten bir ekosistemdir. Halka açık akış verileyle beslenen yapay zeka araçlarıyla benzer sonuçları göstermemektedir.
                   </p>
                   <MousePointer2 className="absolute bottom-4 right-4 text-white/20 rotate-12" size={24} />
                </div>

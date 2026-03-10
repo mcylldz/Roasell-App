@@ -56,7 +56,7 @@ const ActionSection: React.FC = () => {
 
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-24 items-start">
-          
+
           <div className="space-y-10 lg:sticky lg:top-32">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass border-blue-500/20 text-blue-400 text-[10px] font-black mono tracking-[0.3em] uppercase">
               <Zap size={12} className="fill-blue-400" />
@@ -82,13 +82,13 @@ const ActionSection: React.FC = () => {
             <div className="flex flex-col gap-4">
               {/* Toggle Controls */}
               <div className="flex p-1 bg-zinc-950 rounded-xl border border-white/5">
-                <button 
+                <button
                   onClick={() => setMode('basit')}
                   className={`flex-1 py-3 text-[11px] font-black uppercase tracking-widest rounded-lg transition-all ${mode === 'basit' ? 'bg-blue-600 text-white shadow-lg' : 'text-zinc-500 hover:text-zinc-300'}`}
                 >
                   BASİT
                 </button>
-                <button 
+                <button
                   onClick={() => setMode('uzman')}
                   className={`flex-1 py-3 text-[11px] font-black uppercase tracking-widest rounded-lg transition-all ${mode === 'uzman' ? 'bg-blue-600 text-white shadow-lg' : 'text-zinc-500 hover:text-zinc-300'}`}
                 >
@@ -99,7 +99,7 @@ const ActionSection: React.FC = () => {
               {/* Action Button */}
               <button className="w-full py-4 bg-[#1a1b21] border border-blue-500/20 text-blue-400 font-black rounded-xl hover:bg-blue-500/10 transition-all flex items-center justify-center gap-3 text-[12px] tracking-[0.2em] uppercase mono group shadow-2xl">
                 <Zap size={16} className="fill-blue-500 group-hover:scale-110 transition-transform" />
-                YENİ ANALİZ BAŞLAT
+                REKLAM ANALİNİZİ BAŞLAT
               </button>
             </div>
 
