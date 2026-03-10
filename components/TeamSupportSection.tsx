@@ -15,7 +15,7 @@ const TeamSupportSection: React.FC = () => {
       </div>
 
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-[120px] -z-10 translate-x-1/2 -translate-y-1/2 opacity-50" />
-      
+
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-24 items-center">
           <div className="space-y-10">
@@ -53,20 +53,20 @@ const TeamSupportSection: React.FC = () => {
 
           <div className="relative">
             <div className="glass rounded-[3rem] p-12 border border-white/10 relative z-10 bg-zinc-950/40 overflow-hidden">
-               <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 0)', backgroundSize: '30px 30px' }} />
-               <div className="flex flex-col items-center text-center space-y-6">
-                 <div className="w-20 h-20 rounded-full bg-blue-600/10 border border-blue-500/30 flex items-center justify-center">
-                    <Users className="text-blue-500" size={40} />
-                 </div>
-                 <h3 className="text-3xl font-black tracking-tight uppercase italic">Bütünsel Karar Sistemi</h3>
-                 <p className="text-zinc-400 font-medium">
-                   "Yazılım veriyi yakalar, ekip ise bu verinin sizin için en güvenli Shopify stratejisi olup olmadığını doğrular."
-                 </p>
-                 <div className="flex gap-4 pt-4">
-                    <div className="px-4 py-2 glass rounded-full text-[10px] font-black mono text-emerald-400 tracking-widest uppercase">UZMAN DESTEĞİ AKTİF</div>
-                    <div className="px-4 py-2 glass rounded-full text-[10px] font-black mono text-blue-400 tracking-widest uppercase">STRATEJİ DENETLENİYOR</div>
-                 </div>
-               </div>
+              <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 0)', backgroundSize: '30px 30px' }} />
+              <div className="flex flex-col items-center text-center space-y-6">
+                <div className="w-20 h-20 rounded-full bg-blue-600/10 border border-blue-500/30 flex items-center justify-center">
+                  <Users className="text-blue-500" size={40} />
+                </div>
+                <h3 className="text-3xl font-black tracking-tight uppercase italic">Bütünsel Karar Sistemi</h3>
+                <p className="text-zinc-400 font-medium">
+                  "Yazılım veriyi yakalar, ekip ise bu verinin sizin için en güvenli E-ticaret stratejisi olup olmadığını doğrular."
+                </p>
+                <div className="flex gap-4 pt-4">
+                  <div className="px-4 py-2 glass rounded-full text-[10px] font-black mono text-emerald-400 tracking-widest uppercase">UZMAN DESTEĞİ AKTİF</div>
+                  <div className="px-4 py-2 glass rounded-full text-[10px] font-black mono text-blue-400 tracking-widest uppercase">STRATEJİ DENETLENİYOR</div>
+                </div>
+              </div>
             </div>
             {/* Visual Flair Elements */}
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-600/10 rounded-full blur-[60px]" />

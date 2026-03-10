@@ -64,8 +64,8 @@ const ActionSection: React.FC = () => {
             </div>
 
             <h2 className="text-7xl lg:text-8xl font-black tracking-tighter leading-[0.85]">
-              Belirsizliği <br />
-              <span className="text-zinc-600 italic">planlayın.</span>
+              Analize <br />
+              <span className="text-zinc-600 italic">Başlayın</span>
             </h2>
 
             <p className="text-2xl text-zinc-400 leading-relaxed font-medium">

@@ -19,14 +19,14 @@ const ControlSection: React.FC = () => {
 
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-24 items-center">
-          
+
           <div className="space-y-8 order-2 lg:order-1">
             <div className="glass rounded-[3rem] p-12 border border-white/10 space-y-10 relative overflow-hidden bg-zinc-950/40">
               <div className="flex justify-between items-center text-[10px] mono text-zinc-500 uppercase tracking-[0.4em] font-black">
                 <span>Pazar Verisi // LAB_MODU_GELECEK</span>
                 <span>Bebek & Çocuk / TR</span>
               </div>
-              
+
               <div className="space-y-6">
                 <div className="flex items-baseline gap-6">
                   <span className="text-[120px] font-black text-white tracking-tighter leading-none italic">#4</span>
@@ -36,7 +36,7 @@ const ControlSection: React.FC = () => {
                   </div>
                 </div>
                 <p className="text-2xl text-zinc-400 font-medium leading-tight">Bu nişteki büyüme hızı <span className="text-white font-black underline decoration-emerald-500/50">verilere göre</span> gelecekteki konumunuzu belirler.</p>
-                
+
                 <div className="relative pt-10 pb-4">
                   <div className="w-full bg-zinc-800 h-3 rounded-full overflow-hidden shadow-inner">
                     <div className="bg-gradient-to-r from-blue-600 via-emerald-500 to-emerald-400 w-[95%] h-full shadow-[0_0_20px_rgba(16,185,129,0.4)]" />
@@ -58,18 +58,18 @@ const ControlSection: React.FC = () => {
 
             <div className="grid grid-cols-2 gap-6">
               <div className="glass rounded-[2rem] p-8 border border-white/10 space-y-4 hover:border-blue-500/30 transition-all cursor-default">
-                 <Activity className="text-blue-500" size={32} />
-                 <div>
-                   <div className="text-4xl font-black italic tracking-tighter">12.4x</div>
-                   <div className="text-[10px] text-zinc-600 mono font-black uppercase tracking-widest">Pazar Hızı</div>
-                 </div>
+                <Activity className="text-blue-500" size={32} />
+                <div>
+                  <div className="text-4xl font-black italic tracking-tighter">12.4x</div>
+                  <div className="text-[10px] text-zinc-600 mono font-black uppercase tracking-widest">Pazar Hızı</div>
+                </div>
               </div>
               <div className="glass rounded-[2rem] p-8 border border-white/10 space-y-4 hover:border-emerald-500/30 transition-all cursor-default">
-                 <TrendingUp className="text-emerald-500" size={32} />
-                 <div>
-                   <div className="text-4xl font-black italic tracking-tighter">+%42</div>
-                   <div className="text-[10px] text-zinc-600 mono font-black uppercase tracking-widest">Büyüme İvmesi</div>
-                 </div>
+                <TrendingUp className="text-emerald-500" size={32} />
+                <div>
+                  <div className="text-4xl font-black italic tracking-tighter">+%42</div>
+                  <div className="text-[10px] text-zinc-600 mono font-black uppercase tracking-widest">Büyüme İvmesi</div>
+                </div>
               </div>
             </div>
           </div>
@@ -96,32 +96,32 @@ const ControlSection: React.FC = () => {
             </div>
 
             <div className="space-y-8">
-               {[
-                 { 
-                   title: "Küresel Radar", 
-                   desc: "Dünya liderlerinin stratejilerini inceleyerek kendi büyüme haritanızı çıkarın.",
-                   icon: <Globe className="text-blue-500" />
-                 },
-                 { 
-                   title: "Gelişim Analizi", 
-                   desc: "Pazar açıklarını ve rakiplerinizin göremediği fırsatları verilerle tespit edin.",
-                   icon: <ShieldCheck className="text-emerald-500" />
-                 }
-               ].map((item, i) => (
-                 <div key={i} className="flex gap-8 group cursor-default">
-                   <div className="w-16 h-16 rounded-[1.5rem] bg-zinc-900 border border-white/5 flex items-center justify-center shrink-0 shadow-inner group-hover:scale-110 transition-transform">
-                     {item.icon}
-                   </div>
-                   <div className="space-y-2">
-                     <h4 className="font-black text-2xl tracking-tight uppercase italic">{item.title}</h4>
-                     <p className="text-lg text-zinc-500 font-medium leading-snug">{item.desc}</p>
-                   </div>
-                 </div>
-               ))}
+              {[
+                {
+                  title: "Küresel Radar",
+                  desc: "Dünya liderlerinin stratejilerini inceleyerek kendi büyüme haritanızı çıkarın.",
+                  icon: <Globe className="text-blue-500" />
+                },
+                {
+                  title: "Gelişim Analizi",
+                  desc: "Pazar açıklarını ve rakiplerinizin göremediği fırsatları verilerle tespit edin.",
+                  icon: <ShieldCheck className="text-emerald-500" />
+                }
+              ].map((item, i) => (
+                <div key={i} className="flex gap-8 group cursor-default">
+                  <div className="w-16 h-16 rounded-[1.5rem] bg-zinc-900 border border-white/5 flex items-center justify-center shrink-0 shadow-inner group-hover:scale-110 transition-transform">
+                    {item.icon}
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="font-black text-2xl tracking-tight uppercase italic">{item.title}</h4>
+                    <p className="text-lg text-zinc-500 font-medium leading-snug">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
             </div>
 
             <button className="px-10 py-5 bg-zinc-800 text-white font-black rounded-2xl hover:bg-zinc-700 transition-all border border-white/10 flex items-center gap-3 shadow-xl shadow-black uppercase tracking-widest text-sm">
-              LAB VİZYONUNU İNCELE
+              Şimdi Katıl
               <ArrowRight size={18} className="text-zinc-500" />
             </button>
           </div>

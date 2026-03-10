@@ -19,11 +19,11 @@ const ArbitrageSection: React.FC = () => {
 
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-20 items-center">
-          
+
           <div className="space-y-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-zinc-400 text-[10px] font-bold uppercase tracking-widest">
               <Globe size={12} className="text-blue-500" />
-              Veriye Dayalı Pazar Analizi
+              DETAYLI PAZAR ANALİZİ
             </div>
 
             <h2 className="text-6xl lg:text-7xl font-black tracking-tighter leading-[0.9]">
@@ -32,11 +32,11 @@ const ArbitrageSection: React.FC = () => {
             </h2>
 
             <p className="text-xl text-zinc-400 leading-relaxed max-w-lg font-medium">
-              Sistem, küresel pazarlar arasındaki <span className="text-white">veri boşluklarını</span> saniyeler içinde yakalar. Shopify mağazanız için neyin çalıştığını ve Türkiye'de henüz <span className="text-white underline decoration-blue-500/50">doygunluğa ulaşmamış</span> noktaları tahmine değil veriye göre belirlersiniz.
+              Sistem, küresel pazarlar arasındaki <span className="text-white">farkları</span> yakalar. E-ticaret mağazanız için neyin çalıştığını ve Türkiye'de henüz <span className="text-white underline decoration-blue-500/50">doygunluğa ulaşmamış</span> noktaları tahmine değil realiteye göre belirlersiniz.
             </p>
 
             <button className="group inline-flex items-center gap-4 text-blue-500 font-black uppercase text-sm tracking-widest hover:text-white transition-all">
-              VERİLERİ İNCELE 
+              VERİLERİ İNCELE
               <div className="w-10 h-10 rounded-full border border-blue-500/30 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-all">
                 <ArrowRight size={20} />
               </div>
@@ -44,9 +44,9 @@ const ArbitrageSection: React.FC = () => {
           </div>
 
           <div className="glass rounded-3xl p-10 border border-white/10 space-y-8 bg-[#0a0a0c]">
-             <div className="flex justify-between items-center border-b border-white/5 pb-6">
+            <div className="flex justify-between items-center border-b border-white/5 pb-6">
               <h3 className="text-sm font-black mono text-zinc-500 uppercase tracking-[0.2em]">Pazar Tespit Radarı</h3>
-              <span className="text-[10px] mono text-blue-400 animate-pulse font-black">ANALİZ EDİLİYOR</span>
+              <span className="text-[10px] mono text-blue-400 animate-pulse font-black">Pazar Dinleniyor</span>
             </div>
 
             {/* Opportunity Card 1 */}
@@ -85,9 +85,9 @@ const ArbitrageSection: React.FC = () => {
                 <Globe className="text-white" size={24} />
               </div>
               <div className="space-y-1">
-                <h5 className="text-[10px] font-black text-blue-400 uppercase tracking-widest">Veri Analizi</h5>
+                <h5 className="text-[10px] font-black text-blue-400 uppercase tracking-widest">İPUCU:</h5>
                 <p className="text-sm text-zinc-300 leading-relaxed font-bold">
-                  "Boyun Fanı" globalde kanıtlanmış bir satış grafiği çizerken, Türkiye'de arama hacmi <span className="text-white">+%42</span> yükseliyor. Kontrollü bir giriş noktası.
+                  ABD ve Avrupa pazarında yüksek rekabette olan, fakat henüz Türkiye’de satışına başlanmamış binlerce ürün satıcısını beklerken trendi geçiyor.
                 </p>
               </div>
             </div>

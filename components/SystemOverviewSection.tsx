@@ -72,7 +72,7 @@ const SystemOverviewSection: React.FC = () => {
                 Bu Kimin İçin DEĞİL?
               </h3>
               <ul className="space-y-4">
-                {["Amazon satıcıları", "Pasif gelir peşinde koşanlar", "Hızlı zengin olma hayali kuranlar"].map((item, i) => (
+                {["Pazaryeri satıcıları", "Offline Tüccarlar", "Paralı trafiğe ihtiyaç duymayanlar"].map((item, i) => (
                   <li key={i} className="flex items-center gap-4 text-zinc-500 font-medium text-lg">
                     <div className="w-1.5 h-1.5 rounded-full bg-red-500" />
                     {item}
@@ -88,7 +88,7 @@ const SystemOverviewSection: React.FC = () => {
             SİSTEMİ ŞİMDİ AKTİF ET
             <ArrowRight className="inline-block ml-3 group-hover:translate-x-2 transition-transform" />
           </button>
-          <p className="mt-6 text-zinc-600 text-xs font-black mono tracking-widest uppercase italic">Shopify Karar Destek Mekanizması</p>
+          <p className="mt-6 text-zinc-600 text-xs font-black mono tracking-widest uppercase italic">ROASELL: Dijital Emniyet Kemeri</p>
         </div>
       </div>
     </section>
