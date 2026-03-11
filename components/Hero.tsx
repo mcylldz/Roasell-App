@@ -4,7 +4,7 @@ import { Zap, Activity, Target, ShieldCheck, ArrowRight, ShieldAlert, ChevronRig
 
 const Hero: React.FC = () => {
   return (
-    <section className="relative pt-24 pb-12 sm:pt-32 sm:pb-16 lg:pt-40 lg:pb-28 overflow-hidden border-b border-white/5 bg-[#050505]">
+    <section className="relative pt-12 pb-4 overflow-hidden border-b border-white/5 bg-[#050505]">
       {/* Background Ambience */}
       <div className="absolute top-0 right-0 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-blue-600/10 rounded-full blur-[100px] -z-10 translate-x-1/2 -translate-y-1/2 opacity-50" />
       <div className="absolute bottom-0 left-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-red-600/10 rounded-full blur-[80px] -z-10 -translate-x-1/4 opacity-40" />
@@ -13,8 +13,8 @@ const Hero: React.FC = () => {
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
 
           {/* LEFT SIDE */}
-          <div className="space-y-6 sm:space-y-8 max-w-2xl relative z-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass border-blue-500/20 text-blue-400 text-[9px] sm:text-[10px] font-bold mono tracking-widest uppercase">
+          <div className="space-y-6 sm:space-y-8 relative z-10 overflow-hidden">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg glass border-blue-500/20 text-blue-400 text-[9px] sm:text-[10px] font-bold mono tracking-widest uppercase">
               <ShieldAlert size={12} className="animate-pulse" />
               Dijital Emniyet Kemeri: ROASELL APP
             </div>
@@ -36,19 +36,14 @@ const Hero: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 pt-2">
-              <button className="group relative px-6 sm:px-8 py-4 bg-white text-black font-black rounded-lg flex items-center justify-center gap-2 hover:scale-105 transition-all shadow-[0_0_30px_rgba(255,255,255,0.1)] active:scale-95 text-sm sm:text-base">
+            <div className="pt-2">
+              <button className="group relative px-6 sm:px-8 py-4 bg-white text-black font-black rounded-lg flex items-center justify-center gap-2 hover:scale-105 transition-all shadow-[0_0_30px_rgba(255,255,255,0.1)] active:scale-95 text-sm sm:text-base w-full sm:w-auto">
                 ALGORİTMAYI ŞİMDİ ENTEGRE ET
                 <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
               </button>
-
-              <button className="px-6 sm:px-8 py-4 glass text-white font-bold rounded-lg hover:bg-white/5 transition-all flex items-center justify-center gap-2 border border-white/10 group text-xs sm:text-sm tracking-widest uppercase mono">
-                SİSTEM NASIL KORUR?
-                <ChevronRight size={16} className="text-zinc-500 group-hover:translate-x-1 transition-transform" />
-              </button>
             </div>
 
-            <div className="flex flex-wrap items-center gap-4 sm:gap-6 pt-2">
+            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 pt-2">
               {[
                 { icon: <ShieldCheck size={14} />, label: "7 YILLIK VERİ" },
                 { icon: <Zap size={14} />, label: "HIZLI AKSİYON" },

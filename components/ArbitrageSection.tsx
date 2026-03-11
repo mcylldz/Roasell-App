@@ -4,7 +4,7 @@ import { Globe, ArrowRight, Zap } from 'lucide-react';
 
 const ArbitrageSection: React.FC = () => {
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-[#050505] border-b border-white/5 relative">
+    <section className="py-4 bg-[#050505] border-b border-white/5 relative">
       <div className="container mx-auto px-4 sm:px-6 mb-8 sm:mb-12">
         <div className="flex items-center gap-4 sm:gap-6">
           <div className="bg-blue-600 px-4 py-1.5 rounded-sm text-[11px] sm:text-[12px] font-black mono text-white tracking-[0.2em] sm:tracking-[0.3em] uppercase shadow-[0_0_20px_rgba(37,99,235,0.3)]">

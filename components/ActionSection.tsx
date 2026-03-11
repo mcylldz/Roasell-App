@@ -13,7 +13,7 @@ const ActionSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-[#080808] border-y border-white/5 relative overflow-hidden">
+    <section className="py-4 bg-[#080808] border-y border-white/5 relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 mb-8 sm:mb-12">
         <div className="flex items-center gap-4 sm:gap-6">
           <div className="bg-white/10 px-4 py-1.5 rounded-sm text-[11px] sm:text-[12px] font-black mono text-white tracking-[0.2em] sm:tracking-[0.3em] uppercase border border-white/20">
@@ -36,15 +36,14 @@ const ActionSection: React.FC = () => {
             </div>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black tracking-tighter leading-[0.85]">
-              Analize <br />
-              <span className="text-zinc-600 italic">Başlayın</span>
+              Analize <span className="text-zinc-600 italic">Başlayın</span>
             </h2>
 
             <p className="text-base sm:text-lg lg:text-xl text-zinc-400 leading-relaxed font-medium">
               Action Engine sadece veri göstermez; her kreatif için <span className="text-white font-bold italic underline decoration-blue-500/40">matematiksel bir hareket planı</span> çıkarır. Hook, Hold ve CVR metriklerini eşleştirerek hangi reklamın ölçekleneceğini, hangisinin dinlendirilmesi gerektiğini söyler.
             </p>
 
-            <div className="p-5 sm:p-6 rounded-xl bg-blue-600/5 border border-blue-500/20 italic text-blue-300/80 text-sm sm:text-base font-medium">
+            <div className="p-3 rounded-xl bg-blue-600/5 border border-blue-500/20 italic text-blue-300/80 text-sm sm:text-base font-medium">
               "Kreatif tıklama getiriyor fakat dönüşüm oranı düşük (%5.95 CVR), ürün sayfası veya teklif revize edilerek reklam ölçeklenebilir."
             </div>
           </div>
