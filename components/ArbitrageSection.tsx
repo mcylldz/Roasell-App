@@ -27,16 +27,18 @@ const ArbitrageSection: React.FC = () => {
             </div>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black tracking-tighter leading-[0.9]">
-              "Ne satmalıyım?" <br />
-              <span className="text-zinc-600">belirsizliğini azaltın.</span>
+              Ne satmalıyım? <br />
+              <span className="text-zinc-600">Belirsizliğini bitirin.</span>
             </h2>
 
             <p className="text-base sm:text-lg lg:text-xl text-zinc-400 leading-relaxed max-w-lg font-medium">
-              Sistem, küresel pazarlar arasındaki <span className="text-white">farkları</span> yakalar. E-ticaret mağazanız için neyin çalıştığını ve Türkiye'de henüz <span className="text-white underline decoration-blue-500/50">doygunluğa ulaşmamış</span> noktaları tahmine değil realiteye göre belirlersiniz.
+              Tarihin en maliyetli tavsiyesi: <span className="text-white italic">'Her ürün iyi pazarlama ile satar'.</span><br /><br />
+              Bu fiyaskoyu verilerle tarihe karıştırır. Globalde satılan ürünlerin hacimlerini ve Türkiye'deki pazar hacmini önünüze serer. <span className="text-white underline decoration-blue-500/50">Piyasalardaki boşlukları</span> keşfetmenizi sağlar.<br /><br />
+              Ne satılıyor? cevabını verir, ne satmalıyım belirsizliğini bitirir.
             </p>
 
             <button className="group inline-flex items-center gap-3 text-blue-500 font-black uppercase text-sm tracking-widest hover:text-white transition-all">
-              VERİLERİ İNCELE
+              ŞİMDİ BAŞLA
               <div className="w-9 h-9 rounded-full border border-blue-500/30 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-all">
                 <ArrowRight size={18} />
               </div>

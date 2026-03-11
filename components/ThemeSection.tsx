@@ -106,8 +106,8 @@ const ThemeSection: React.FC = () => {
             </div>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black tracking-tighter leading-[0.85]">
-              Kötü mağaza <br />
-              <span className="text-zinc-600 italic">kurmanızı önler.</span>
+              Kötü Mağazada <br />
+              <span className="text-zinc-600 italic">İyi Ürün Satılmaz!</span>
             </h2>
 
             <p className="text-base sm:text-lg lg:text-xl text-zinc-400 leading-relaxed font-medium">
@@ -116,9 +116,9 @@ const ThemeSection: React.FC = () => {
 
             <div className="space-y-5 sm:space-y-6 pt-2">
               {[
-                { title: "Tasarım Hatasını Engeller", desc: "Yeni başlayan hatalarını ortadan kaldırarak profesyonel bir başlangıç sağlar.", icon: <Layout className="text-blue-500" /> },
-                { title: "Güven Faktörleri", desc: "Müşterinin sepeti terk etme riskini azaltan denetlenmiş bileşenler.", icon: <Star className="text-yellow-500" /> },
-                { title: "Optimize Edilmiş Akış", desc: "Teknik sorunlardan kaynaklanan dönüşüm kayıplarını minimuma indirir.", icon: <CreditCard className="text-emerald-500" /> }
+                { title: "Profesyonel Mağaza Mimarisi", desc: "Amatör tasarım hatalarını ortadan kaldırır.", icon: <Layout className="text-blue-500" /> },
+                { title: "Güven Psikolojisi", desc: "Müşterinin satın alma kararını hızlandıran güven faktörleri.", icon: <Star className="text-yellow-500" /> },
+                { title: "Optimize Satış Akışı", desc: "Ziyaretçiyi satın almaya yönlendiren sayfa yapısı.", icon: <CreditCard className="text-emerald-500" /> }
               ].map((item, i) => (
                 <div key={i} className="flex gap-4 group">
                   <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-zinc-900 border border-white/5 flex items-center justify-center shrink-0 mt-0.5 shadow-inner group-hover:scale-110 transition-transform">

@@ -21,8 +21,8 @@ const Hero: React.FC = () => {
 
             <div className="space-y-4 sm:space-y-5">
               <h1 className="text-3xl sm:text-4xl lg:text-6xl xl:text-[70px] font-extrabold tracking-tighter leading-[0.95] text-white">
-                Ticaretinizi Doğru Yönetin. <br />
-                <span className="text-zinc-600">Sermayenizi Koruyun.</span>
+                Ticaretinizi algoritma desteği ile yönetin. <br />
+                <span className="text-zinc-600">Sermayeniz verimli kullanılsın.</span>
               </h1>
 
               <div className="space-y-3">
@@ -31,7 +31,7 @@ const Hero: React.FC = () => {
                 </p>
                 <div className="flex items-center gap-2 pl-4 sm:pl-6 text-blue-400 font-bold text-xs sm:text-sm italic">
                   <Shield size={14} />
-                  <span>Roasell, online ticaretinizde hatasız bir reklam yönetim süreci sürdürmek için tasarlanmıştır.</span>
+                  <span>RoaSell, reklam yönetiminde dışa ve insana bağımlılığı bitirir; size ne yapmanız gerektiğini 7/24 söyler.</span>
                 </div>
               </div>
             </div>
@@ -107,7 +107,7 @@ const Hero: React.FC = () => {
                   <span className="text-[10px] sm:text-xs font-black text-blue-400 uppercase tracking-widest">İPUCU;</span>
                 </div>
                 <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-bold italic">
-                  Roasell açık kaynaklı bir reklam analiz aracı değildir. 7 Yıllık E-Ticaret verileriyle eğitilmiş gerçek sektörel hafızaya sahip sürekli güncellenen, veri ağını büyüten bir ekosistemdir. Halka açık akış verileyle beslenen yapay zeka araçlarıyla benzer sonuçları göstermemektedir.
+                  Her yönlendirmesi tecrübeyle eğitilmiş araçlarımız, halka açık verilerle beslenen yapay zeka araçlarının aksine; gerçekten işinize yarayan çıktılar verir.
                 </p>
                 <MousePointer2 className="absolute bottom-3 right-3 text-white/20 rotate-12" size={20} />
               </div>

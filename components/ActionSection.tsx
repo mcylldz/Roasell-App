@@ -6,10 +6,9 @@ const ActionSection: React.FC = () => {
   const [mode, setMode] = useState<'basit' | 'uzman'>('basit');
 
   const actions = [
-    { id: 1, type: 'success', title: "En Yüksek Karlılık ve Verim", description: "8.79 Karlılık Endeksi (PI) ve %2.25 CTR ile setin en verimli reklamı. Medyanın üzerindeki tıklama oranı satış başarısını tetikliyor.", buttonLabel: "Bütçeyi %20 Artır", accent: "emerald" },
-    { id: 2, type: 'success', title: "Yüksek Hacimli Kar Odağı", description: "1.5M+ net kar ve %5.95 CVR ile en yüksek dönüşüm oranına sahip. Hook oranı (%18.2) düşük olsa da dönüşüm gücüyle ölçeklemeye uygun.", buttonLabel: "Bütçeyi %20 Artır", accent: "emerald" },
-    { id: 3, type: 'success', title: "Güçlü Kreatif Tutundurma", description: "%32.5 Hook ve %22.1 Hold oranıyla izleyiciyi en iyi tutan kreatif. 10.17 ROAS ile yüksek karlılık sergiliyor.", buttonLabel: "Bütçeyi %20 Artır", accent: "emerald" },
-    { id: 4, type: 'warning', title: "Frekans ve Doygunluk Takibi", description: "3.09 frekans ve %1.21 CTR ile kreatif yorgunluğu sinyalleri veriyor. ROAS (6.73) hala karlı ancak diğer aktif reklamların gerisinde.", buttonLabel: "İzlemeye Al", accent: "yellow" }
+    { id: 1, type: 'success', title: "Reklam Çalışıyor — Ölçekle", description: "Reklam çalışıyor. Satış maliyeti iyi ve ROAS yüksek. Bu yüzden kârlı bir şekilde büyümeye uygun.\n\nKademeli bütçe artışıyla ölçekle; aynı görsel konseptin 2-3 varyasyonunu (ilk kare, başlık, teklif vurgusu) paralel teste al.", buttonLabel: "Bütçeyi Artır", accent: "emerald" },
+    { id: 2, type: 'warning', title: "Satış Var Ama ROAS Çok Düşük, Net Negatif", description: "Reklam zarar yazıyor. Satış geliyor ama maliyeti çok yüksek kaldığı için geri dönüş yetmiyor. Bu yüzden bütçe kaybettiriyor.\n\nReklamı kapat ve bütçeyi daha verimli kreatiflere kaydır; bu kreatifi ancak yeni açı/teklif sunumuyla yeniden test et.", buttonLabel: "Reklamı Kapat", accent: "yellow" },
+    { id: 3, type: 'warning', title: "Sepete Ekleme Var Ama Satışa Dönmüyor", description: "Reklam zarar yazıyor. Sepete ekleme ve ödemeye yeltenme var ama satışa yeterince dönmüyor. Bu yüzden bütçe yakıyor.\n\nReklamı kapat ve bütçeyi daha yüksek ROAS üreten kreatiflere kaydır; ayrıca checkout/teklif sürtünmesini (kargo, ödeme, güven) kontrol etmek için ayrı bir inceleme başlat.", buttonLabel: "İncele ve Kapat", accent: "yellow" }
   ];
 
   return (
@@ -85,7 +84,7 @@ const ActionSection: React.FC = () => {
                     <div className="space-y-3 flex-1 min-w-0">
                       <div className="space-y-1">
                         <h4 className="text-sm sm:text-base font-black text-white uppercase tracking-tight italic">{action.title}</h4>
-                        <p className="text-xs sm:text-sm text-zinc-500 leading-relaxed font-medium">
+                        <p className="text-xs sm:text-sm text-zinc-500 leading-relaxed font-medium whitespace-pre-line">
                           {action.description}
                         </p>
                       </div>
