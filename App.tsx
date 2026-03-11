@@ -69,7 +69,7 @@ const App: React.FC = () => {
 
           <div className="flex items-center gap-3">
             <a
-              href="https://app.roasell.com/Identity/Account/Login"
+              href="https://app.roasell.com"
               className="text-[11px] sm:text-[12px] font-bold text-zinc-400 uppercase tracking-wider hover:text-white transition-colors"
             >
               Giriş Yap

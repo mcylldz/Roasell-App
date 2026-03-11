@@ -13,14 +13,14 @@ const Hero: React.FC = () => {
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
 
           {/* LEFT SIDE */}
-          <div className="space-y-6 sm:space-y-8 relative z-10 overflow-hidden">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg glass border-blue-500/20 text-blue-400 text-[9px] sm:text-[10px] font-bold mono tracking-widest uppercase mt-8 sm:mt-12">
+          <div className="space-y-6 sm:space-y-8 relative z-10 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg glass border-blue-500/20 text-blue-400 text-[9px] sm:text-[10px] font-bold mono tracking-widest uppercase mt-8 sm:mt-12 mx-auto lg:mx-0">
               <ShieldAlert size={12} className="animate-pulse" />
               Dijital Emniyet Kemeri: ROASELL APP
             </div>
 
             {/* Hero Vimeo Video */}
-            <div className="w-full aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+            <div className="w-full max-w-lg mx-auto lg:mx-0 lg:max-w-none aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl">
               <iframe
                 src="https://player.vimeo.com/video/1172700670?badge=0&autopause=0&player_id=0&app_id=58479"
                 frameBorder="0"
@@ -37,17 +37,17 @@ const Hero: React.FC = () => {
               </h1>
 
               <div className="space-y-3">
-                <p className="text-base sm:text-lg lg:text-xl text-zinc-400 leading-relaxed font-medium border-l-2 border-blue-600/50 pl-4 sm:pl-6 max-w-xl">
+                <p className="text-base sm:text-lg lg:text-xl text-zinc-400 leading-relaxed font-medium border-l-2 border-blue-600/50 pl-4 sm:pl-6 max-w-xl mx-auto lg:mx-0 text-left">
                   RoaSell, reklam yönetme sürecinizde sizi kimseye bağlı kalmadan kendi reklamlarınızı yönetebilir hale getirir. 7 yıllık tecrübe ile beslediğimiz algoritmamız sayesinde kampanya düzeyinden en ufak reklam düzeyine kadar almanız gereken aksiyonları size söyler.
                 </p>
-                <div className="flex items-center gap-2 pl-4 sm:pl-6 text-blue-400 font-bold text-xs sm:text-sm italic">
+                <div className="flex items-center justify-center lg:justify-start gap-2 pl-4 sm:pl-6 text-blue-400 font-bold text-xs sm:text-sm italic">
                   <Shield size={14} />
                   <span>RoaSell, reklam yönetiminde dışa ve insana bağımlılığı bitirir; size ne yapmanız gerektiğini 7/24 söyler.</span>
                 </div>
               </div>
             </div>
 
-            <div className="pt-2">
+            <div className="pt-2 flex justify-center lg:justify-start">
               <button className="group relative px-6 sm:px-8 py-4 bg-white text-black font-black rounded-lg flex items-center justify-center gap-2 hover:scale-105 transition-all shadow-[0_0_30px_rgba(255,255,255,0.1)] active:scale-95 text-sm sm:text-base w-full sm:w-auto">
                 ALGORİTMAYI ŞİMDİ ENTEGRE ET
                 <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
