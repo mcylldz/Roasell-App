@@ -14,9 +14,20 @@ const Hero: React.FC = () => {
 
           {/* LEFT SIDE */}
           <div className="space-y-6 sm:space-y-8 relative z-10 overflow-hidden">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg glass border-blue-500/20 text-blue-400 text-[9px] sm:text-[10px] font-bold mono tracking-widest uppercase">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg glass border-blue-500/20 text-blue-400 text-[9px] sm:text-[10px] font-bold mono tracking-widest uppercase mt-8 sm:mt-12">
               <ShieldAlert size={12} className="animate-pulse" />
               Dijital Emniyet Kemeri: ROASELL APP
+            </div>
+
+            {/* Hero Vimeo Video */}
+            <div className="w-full aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+              <iframe
+                src="https://player.vimeo.com/video/1172700670?badge=0&autopause=0&player_id=0&app_id=58479"
+                frameBorder="0"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+                className="w-full h-full"
+                title="RoaSell Tanıtım"
+              />
             </div>
 
             <div className="space-y-4 sm:space-y-5">
