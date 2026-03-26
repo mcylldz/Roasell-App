@@ -180,7 +180,7 @@ const Hero: React.FC = () => {
             onClick={() => window.dispatchEvent(new CustomEvent('openPaymentModal'))}
             className="group relative px-6 sm:px-8 py-4 bg-white text-black font-black rounded-lg flex items-center justify-center gap-2 hover:scale-105 transition-all shadow-[0_0_30px_rgba(255,255,255,0.1)] active:scale-95 text-sm sm:text-base w-full sm:w-auto"
           >
-            ALGORİTMAYI ŞİMDİ ENTEGRE ET
+            3 Gün $1 — Reklamlarını Analiz Et
             <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
           </button>
 

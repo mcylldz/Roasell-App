@@ -9,6 +9,8 @@ import ThemeSection from './components/ThemeSection';
 import SystemOverviewSection from './components/SystemOverviewSection';
 import TeamSupportSection from './components/TeamSupportSection';
 import UserTestimonialsSection from './components/UserTestimonialsSection';
+import AnalysisOutputSection from './components/AnalysisOutputSection';
+import BenefitsSection from './components/BenefitsSection';
 import PaymentModal from './components/PaymentModal';
 import ThankYouPage from './components/ThankYouPage';
 import AbonelikPage from './components/AbonelikPage';
@@ -103,13 +105,19 @@ const App: React.FC = () => {
       <Hero />
 
       <main className="relative overflow-x-hidden">
-        {/* ANA ÜRÜN: Reklam Analizi — En üstte */}
+        {/* Örnek Analiz Çıktıları — Hero'nun hemen altında */}
+        <AnalysisOutputSection />
+
+        {/* ANA ÜRÜN: Reklam Analizi — Detaylı */}
         <div id="analiz">
           <ScoreSection />
           <ActionSection />
         </div>
 
-        {/* Sosyal Kanıt — Reklam analizinin hemen altında */}
+        {/* Ne İşe Yarar — Basit fayda anlatımı */}
+        <BenefitsSection />
+
+        {/* Sosyal Kanıt */}
         <UserTestimonialsSection />
 
         {/* Nasıl Çalışır + Kimler İçin */}
