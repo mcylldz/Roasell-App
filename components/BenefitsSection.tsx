@@ -35,7 +35,7 @@ const BenefitsSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-[#050505] border-t border-white/5 relative overflow-hidden">
+    <section className="py-10 sm:py-16 lg:py-24 bg-[#050505] border-t border-white/5 relative overflow-hidden">
       <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-emerald-600/5 rounded-full blur-[100px] -z-10 translate-x-1/3 translate-y-1/3" />
 
       <div className="container mx-auto px-4 sm:px-6">

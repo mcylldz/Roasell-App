@@ -6,21 +6,21 @@ const AnalysisOutputSection: React.FC = () => {
   const cards = [
     {
       status: 'success',
-      statusLabel: 'YÜKSEK ROAS + GÜÇLÜ NİYET: ÖLÇEK ADAYI',
+      statusLabel: 'REKLAM ÇALIŞIYOR — ÖLÇEKLE',
       confidence: 80,
       campaignName: 'KADIN MONT KOLEKSİYON / CBO / GENIŞ',
       analysis:
-        'Bu reklam güçlü bir satış dönüşümü sağlıyor. ROAS hedefin üzerinde, satış başına maliyet düşük ve izleyici niyeti yüksek. Kademeli bütçe artışıyla ölçeklemeye uygun.',
-      action: 'Bütçeyi Kademeli Artır',
+        'Reklam çalışıyor. Satış maliyeti iyi ve ROAS yüksek. Bu yüzden kârlı bir şekilde büyümeye uygun.\n\nKademeli bütçe artışıyla ölçekle; aynı görsel konseptin 2-3 varyasyonunu (ilk kare, başlık, teklif vurgusu) paralel teste al.',
+      action: 'Bütçeyi Artır',
       accent: 'emerald',
     },
     {
       status: 'warning',
-      statusLabel: 'SATIŞ VAR AMA ROAS ÇOK DÜŞÜK — NET NEGATİF',
+      statusLabel: 'SATIŞ VAR AMA ROAS ÇOK DÜŞÜK, NET NEGATİF',
       confidence: 72,
       campaignName: 'ERKEK AYAKKABI / RETARGETING / DAR',
       analysis:
-        'Bu reklam satış getiriyor ama maliyet çok yüksek. Harcanan bütçeye karşılık gelen gelir kâr bırakmıyor. Reklam bütçeyi yakıyor ve zarar yazıyor.',
+        'Reklam zarar yazıyor. Satış geliyor ama maliyeti çok yüksek kaldığı için geri dönüş yetmiyor. Bu yüzden bütçe kaybettiriyor.\n\nReklamı kapat ve bütçeyi daha verimli kreatiflere kaydır; bu kreatifi ancak yeni açı/teklif sunumuyla yeniden test et.',
       action: 'Reklamı Kapat',
       accent: 'red',
     },
@@ -30,14 +30,14 @@ const AnalysisOutputSection: React.FC = () => {
       confidence: 65,
       campaignName: 'AKSESUAR SET / LOOKALIKE / %1',
       analysis:
-        'İlgi var ama satışa dönüşmüyor. Sepete ekleme oranı yüksek olmasına rağmen checkout aşamasında kayıp yaşanıyor. Ürün sayfası veya teklif revize edilmeli.',
-      action: 'İncele ve Revize Et',
+        'Reklam zarar yazıyor. Sepete ekleme ve ödemeye yeltenme var ama satışa yeterince dönmüyor. Bu yüzden bütçe yakıyor.\n\nReklamı kapat ve bütçeyi daha yüksek ROAS üreten kreatiflere kaydır; ayrıca checkout/teklif sürtünmesini (kargo, ödeme, güven) kontrol etmek için ayrı bir inceleme başlat.',
+      action: 'İncele ve Kapat',
       accent: 'yellow',
     },
   ];
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-[#080808] border-t border-white/5 relative overflow-hidden">
+    <section className="py-10 sm:py-16 lg:py-24 bg-[#080808] border-t border-white/5 relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-blue-600/5 rounded-full blur-[120px] -z-10" />
 
       <div className="container mx-auto px-4 sm:px-6">
@@ -128,7 +128,7 @@ const AnalysisOutputSection: React.FC = () => {
                   </div>
 
                   {/* Analysis Text */}
-                  <p className="text-sm sm:text-base text-zinc-400 leading-relaxed font-medium pl-10">
+                  <p className="text-sm sm:text-base text-zinc-400 leading-relaxed font-medium pl-10 whitespace-pre-line">
                     {card.analysis}
                   </p>
 
@@ -158,7 +158,7 @@ const AnalysisOutputSection: React.FC = () => {
             </p>
             <button
               onClick={() => window.dispatchEvent(new Event('openPaymentModal'))}
-              className="group px-8 py-4 bg-blue-600 text-white font-black rounded-xl hover:bg-blue-500 transition-all shadow-[0_15px_30px_rgba(37,99,235,0.25)] text-base tracking-tight active:scale-95 inline-flex items-center gap-3"
+              className="group px-6 sm:px-8 py-3.5 sm:py-4 bg-blue-600 text-white font-black rounded-xl hover:bg-blue-500 transition-all shadow-[0_15px_30px_rgba(37,99,235,0.25)] text-sm sm:text-base tracking-tight active:scale-95 inline-flex items-center gap-2 sm:gap-3 whitespace-nowrap"
             >
               <Zap size={16} className="fill-white" />
               3 Gün $1 — Reklamlarını Analiz Et

@@ -4,18 +4,7 @@ import { ShieldAlert, Activity, AlertTriangle, ShieldCheck, Shield } from 'lucid
 
 const ScoreSection: React.FC = () => {
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-[#050505] relative border-b border-white/5">
-      <div className="container mx-auto px-4 sm:px-6 mb-8 sm:mb-12">
-        <div className="flex items-center gap-4 sm:gap-6">
-          <div className="bg-red-600 px-4 py-1.5 rounded-sm text-[11px] sm:text-[12px] font-black mono text-white tracking-[0.2em] sm:tracking-[0.3em] uppercase shadow-[0_0_20px_rgba(220,38,38,0.3)]">
-            Araç: AI ANALİZ MOTORU
-          </div>
-          <div className="h-px bg-white/10 flex-1" />
-          <div className="text-[9px] sm:text-[10px] mono text-zinc-600 font-bold tracking-widest uppercase hidden sm:block">
-            PROFIT_GUARD_SYSTEM // ACTIVE_MONITORING
-          </div>
-        </div>
-      </div>
+    <section className="py-10 sm:py-16 lg:py-24 bg-[#050505] relative border-b border-white/5">
 
       <div className="container mx-auto px-4 sm:px-6">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
