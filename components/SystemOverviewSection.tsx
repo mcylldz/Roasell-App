@@ -84,8 +84,11 @@ const SystemOverviewSection: React.FC = () => {
         </div>
 
         <div className="text-center">
-          <button className="px-8 sm:px-10 py-4 sm:py-5 bg-blue-600 text-white font-black rounded-xl hover:bg-blue-500 transition-all shadow-[0_15px_30px_rgba(37,99,235,0.2)] text-base sm:text-lg tracking-tighter active:scale-95 group">
-            SİSTEMİ ŞİMDİ AKTİF ET
+          <button
+            onClick={() => window.dispatchEvent(new Event('openPaymentModal'))}
+            className="px-8 sm:px-10 py-4 sm:py-5 bg-blue-600 text-white font-black rounded-xl hover:bg-blue-500 transition-all shadow-[0_15px_30px_rgba(37,99,235,0.2)] text-base sm:text-lg tracking-tighter active:scale-95 group"
+          >
+            3 Gün $1 — Reklamlarını Analiz Et
             <ArrowRight className="inline-block ml-2 group-hover:translate-x-2 transition-transform" />
           </button>
           <p className="mt-4 text-zinc-600 text-[10px] sm:text-xs font-black mono tracking-widest uppercase italic">ROASELL: Dijital Emniyet Kemeri</p>

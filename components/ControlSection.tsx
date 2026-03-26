@@ -111,8 +111,11 @@ const ControlSection: React.FC = () => {
               ))}
             </div>
 
-            <button className="px-6 sm:px-8 py-4 bg-zinc-800 text-white font-black rounded-xl hover:bg-zinc-700 transition-all border border-white/10 flex items-center gap-3 shadow-xl shadow-black uppercase tracking-widest text-xs sm:text-sm">
-              Şimdi Katıl
+            <button
+              onClick={() => window.dispatchEvent(new Event('openPaymentModal'))}
+              className="px-6 sm:px-8 py-4 bg-zinc-800 text-white font-black rounded-xl hover:bg-zinc-700 transition-all border border-white/10 flex items-center gap-3 shadow-xl shadow-black uppercase tracking-widest text-xs sm:text-sm"
+            >
+              3 Gün $1 — Hemen Dene
               <ArrowRight size={16} className="text-zinc-500" />
             </button>
           </div>
