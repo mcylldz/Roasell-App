@@ -8,7 +8,7 @@ const AnalysisOutputSection: React.FC = () => {
       status: 'success',
       statusLabel: 'YÜKSEK ROAS + GÜÇLÜ NİYET: ÖLÇEK ADAYI',
       confidence: 80,
-      campaignName: 'KATALOG CBO / 1000 / 1',
+      campaignName: 'KADIN MONT CBO / 1000 / 1',
       analysis:
         '117.58 harcamada 5 sipariş ve ROAS 4.76; sipariş başı maliyet 23.52 ile verim çok iyi. Doğrudan sitenize giden tıklamalar ucuz (0.14) ve ödemeye yeltenme (11) sayısı siparişle uyumlu; bu, sadece ilgi değil güçlü satın alma niyeti taşındığını gösterir.',
       action: 'Kademeli bütçe artışıyla ölçekle; aynı hedefleme/mesajı koruyup kreatif varyasyonlarını paralel ekle.',
@@ -18,7 +18,7 @@ const AnalysisOutputSection: React.FC = () => {
       status: 'warning',
       statusLabel: 'UCUZ TRAFİK VAR, SATIŞ ZAYIF: İKNA/DÖNÜŞÜM KIRILIYOR',
       confidence: 58,
-      campaignName: 'Veille yeni katalog 1 / patek philippe - Copy 5 / reklam 1',
+      campaignName: 'ERKEK AKSESUAR / RETARGETING / DAR HEDEFLİ',
       analysis:
         '110.26 harcamada 1 sipariş ve ROAS 1.03 ile kârlılık sınırda. En baskın sinyal: çok ucuz doğrudan sitenize giden tıklamaya (0.09) rağmen dönüşüm oranının düşük kalması (0.08) ve ödemeye yeltenmenin 1\'de kalması; yani ilgi var ama satın alma niyeti yeterince derinleşmiyor.',
       action: 'Bütçeyi sabit tut ve izlemeye al; aynı hedefleme korunarak daha güçlü teklif/güven kanıtı içeren kreatif varyasyonlarını paralel test et.',
@@ -28,7 +28,7 @@ const AnalysisOutputSection: React.FC = () => {
       status: 'warning',
       statusLabel: 'AŞIRI YÜKSEK ROAS AMA ÖRNEKLEM KÜÇÜK: SPİKE RİSKİ',
       confidence: 45,
-      campaignName: 'KATALOG CBO Kış / 1200 / 1',
+      campaignName: 'KIŞ KOLEKSİYON CBO / 1200 / 1',
       analysis:
         '50.26 harcamada 4 sipariş ve ROAS 20.63 gibi olağanüstü bir değer var; sipariş başı maliyet 12.57. En baskın sinyal bu kadar düşük harcamada bu kadar yüksek ROAS\'ın "spike/tesadüfi dağılım" olma ihtimali. Düşük harcama hacmi, performansın tekrarlanabilirliğini kanıtlamıyor.',
       action: 'Devam ettir ve izlemeye al; bütçeyi sabit tut, veri birikmesini bekle ve aynı açıyla kreatif varyasyonlarını paralel test et.',
