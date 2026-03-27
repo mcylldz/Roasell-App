@@ -22,23 +22,27 @@ const ScoreSection: React.FC = () => {
 
             <div className="space-y-4">
               <p className="text-base sm:text-lg lg:text-xl text-zinc-400 leading-relaxed font-medium border-l-4 border-red-500/50 pl-4 sm:pl-6">
-                En basit haliyle Roasell, 7 yıllık veri havuzuyla beslenmiş tecrübesini kullanarak reklamlarda neye para harcayıp neye harcamayacağınızı söyler. Ölçeklerken Kârlılığınızı gözetir.
+                RoaSell, reklamlarınızı; sektörünüzü, mağaza yapınızı ve reklam verilerinizi dikkate alarak tek tek analiz eder. 2, 7, 30 günlük aralıklara bakarak analiz yapar. Reklamlarınızın verimliliğini artırmanız için uygulayabileceğiniz aksiyon adımları sunar.
+              </p>
+              <p className="text-sm sm:text-base text-zinc-500 font-medium pl-4 sm:pl-6">
+                Hem paranızı verimli harcamanızı sağlar, hem de daha çok kazanmanız için ne yapmanız gerektiğini söyler.
               </p>
             </div>
 
             <div className="grid gap-4 pt-2">
               {[
-                { label: "Kreatif Analizi.", sub: "Tıklama alan ama satmayan kreatifleri anında tespit eder.", icon: <Activity className="text-blue-500" /> },
-                { label: "Marj Koruması.", sub: "Kar marjı riskli seviyelere düşen setlerde seni uyarır.", icon: <AlertTriangle className="text-red-500" /> },
-                { label: "Ölçekleme Sinyali.", sub: "Yüksek tutundurma (Hold) oranına sahip kreatifleri öne çıkarır.", icon: <ShieldCheck className="text-emerald-500" /> }
+                { label: "Kreatif Analizi.", sub: "Reklam içeriklerinizi değerlendirir, ne tarz içerikler yapmanız gerektiğini size söyler. Verimsiz içerikleri ayıklar.", icon: <Activity className="text-blue-500" /> },
+                { label: "Marj Koruması.", sub: "Karlılığı düşen reklamlarda seni uyarır, erken aksiyon almanı sağlar.", icon: <AlertTriangle className="text-red-500" /> },
+                { label: "Ölçekleme Sinyali.", sub: "Fark etmediğin verimli reklamları yakalar, hangi reklamlara daha fazla para harcaman gerektiğini söyler.", icon: <ShieldCheck className="text-emerald-500" /> }
               ].map((item, i) => (
-                <div key={i} className="flex items-center gap-3 sm:gap-4 group cursor-default">
-                  <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-white/5 flex items-center justify-center shrink-0 group-hover:bg-zinc-800 transition-colors">
+                <div key={i} className="flex items-start gap-3 sm:gap-4 group cursor-default">
+                  <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-white/5 flex items-center justify-center shrink-0 group-hover:bg-zinc-800 transition-colors mt-0.5">
                     {item.icon}
                   </div>
-                  <span className="text-sm sm:text-base lg:text-lg text-zinc-400 font-medium">
-                    <span className="text-white font-black uppercase tracking-tight italic">{item.label}</span> {item.sub}
-                  </span>
+                  <div className="flex-1">
+                    <span className="text-sm sm:text-base font-black text-white uppercase tracking-tight italic">{item.label}</span>
+                    <p className="text-xs sm:text-sm text-zinc-500 leading-relaxed font-medium mt-0.5">{item.sub}</p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -76,7 +80,7 @@ const ScoreSection: React.FC = () => {
                     </div>
                     <span className="text-[10px] sm:text-xs font-black mono text-zinc-600">ROAS 2.1</span>
                   </div>
-                  <p className="text-[10px] sm:text-[11px] text-zinc-600 font-black uppercase tracking-widest mt-1.5 ml-4">YÜKSEK MALİYET UYARISI.</p>
+                  <p className="text-[10px] sm:text-[11px] text-yellow-500 font-black uppercase tracking-widest mt-1.5 ml-4">YÜKSEK MALİYET UYARISI: 12 AKSİYON BEKLİYOR</p>
                 </div>
 
                 {/* Card 2 */}
@@ -84,13 +88,13 @@ const ScoreSection: React.FC = () => {
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
-                      <span className="text-sm sm:text-base font-black text-white uppercase tracking-tight italic">SEPET KAÇAKLARI</span>
+                      <span className="text-sm sm:text-base font-black text-white uppercase tracking-tight italic">KİTLE VERİMLİLİĞİ</span>
                     </div>
                     <span className="text-[10px] sm:text-xs font-black mono text-red-500">%12 (DİKKAT)</span>
                   </div>
                   <div className="pl-4 border-l-2 border-red-500/40 space-y-1.5">
                     <p className="text-[11px] sm:text-[12px] text-zinc-400 font-bold">
-                      <span className="text-red-500 uppercase tracking-widest mr-1 mono">TESPİT:</span> Kargo ücreti son adımda çıkıyor.
+                      <span className="text-red-500 uppercase tracking-widest mr-1 mono">TESPİT:</span> 4 reklam yanlış kitleyi çekiyor (dönüşüm %0.4)
                     </p>
                     <p className="text-[11px] sm:text-[12px] text-zinc-300 font-black">
                       <span className="text-white uppercase tracking-widest mr-1 mono">RISK:</span> Günde ~840 TL Verimsiz Bütçe

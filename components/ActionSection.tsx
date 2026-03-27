@@ -1,16 +1,8 @@
 
-import React, { useState } from 'react';
-import { Target, Zap, CheckCircle2, AlertCircle, ArrowRight, ThumbsUp, AlertTriangle } from 'lucide-react';
+import React from 'react';
+import { Zap, ArrowRight } from 'lucide-react';
 
 const ActionSection: React.FC = () => {
-  const [mode, setMode] = useState<'basit' | 'uzman'>('basit');
-
-  const actions = [
-    { id: 1, type: 'success', title: "Reklam Çalışıyor — Ölçekle", description: "Reklam çalışıyor. Satış maliyeti iyi ve ROAS yüksek. Bu yüzden kârlı bir şekilde büyümeye uygun.\n\nKademeli bütçe artışıyla ölçekle; aynı görsel konseptin 2-3 varyasyonunu (ilk kare, başlık, teklif vurgusu) paralel teste al.", buttonLabel: "Bütçeyi Artır", accent: "emerald" },
-    { id: 2, type: 'warning', title: "Satış Var Ama ROAS Çok Düşük, Net Negatif", description: "Reklam zarar yazıyor. Satış geliyor ama maliyeti çok yüksek kaldığı için geri dönüş yetmiyor. Bu yüzden bütçe kaybettiriyor.\n\nReklamı kapat ve bütçeyi daha verimli kreatiflere kaydır; bu kreatifi ancak yeni açı/teklif sunumuyla yeniden test et.", buttonLabel: "Reklamı Kapat", accent: "yellow" },
-    { id: 3, type: 'warning', title: "Sepete Ekleme Var Ama Satışa Dönmüyor", description: "Reklam zarar yazıyor. Sepete ekleme ve ödemeye yeltenme var ama satışa yeterince dönmüyor. Bu yüzden bütçe yakıyor.\n\nReklamı kapat ve bütçeyi daha yüksek ROAS üreten kreatiflere kaydır; ayrıca checkout/teklif sürtünmesini (kargo, ödeme, güven) kontrol etmek için ayrı bir inceleme başlat.", buttonLabel: "İncele ve Kapat", accent: "yellow" }
-  ];
-
   return (
     <section className="py-4 bg-[#080808] border-y border-white/5 relative overflow-hidden">
 
@@ -28,11 +20,11 @@ const ActionSection: React.FC = () => {
             </h2>
 
             <p className="text-base sm:text-lg lg:text-xl text-zinc-400 leading-relaxed font-medium">
-              Action Engine sadece veri göstermez; her kreatif için <span className="text-white font-bold italic underline decoration-blue-500/40">matematiksel bir hareket planı</span> çıkarır. Hook, Hold ve CVR metriklerini eşleştirerek hangi reklamın ölçekleneceğini, hangisinin dinlendirilmesi gerektiğini söyler.
+              RoaSell motoru sadece veri göstermez; her kreatif için <span className="text-white font-bold italic underline decoration-blue-500/40">matematiksel bir hareket planı</span> çıkarır. Sektör dinamiklerinizi, tüm reklam verilerinizi ve mağaza dinamiklerinizi dikkate alarak hangi reklamın ölçekleneceğini, hangisinin kesilmesi gerektiğini söyler. Gelecek için aksiyon planları çıkartır.
             </p>
 
             <div className="p-3 rounded-xl bg-blue-600/5 border border-blue-500/20 italic text-blue-300/80 text-sm sm:text-base font-medium">
-              "Kreatif tıklama getiriyor fakat dönüşüm oranı düşük (%5.95 CVR), ürün sayfası veya teklif revize edilerek reklam ölçeklenebilir."
+              "Kreatif tıklama getiriyor fakat dönüşüm oranı diğer reklamlarınızdan düşük (%0.32), reklam kapatılıp kreatif teklifi ve faydayı yedirerek revize edilmeli; bu şekilde ölçeklenemez."
             </div>
           </div>
 

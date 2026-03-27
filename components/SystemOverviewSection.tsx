@@ -5,14 +5,6 @@ import { ShieldCheck, ArrowRight, UserCheck, UserMinus, MonitorPlay, Zap, Activi
 const SystemOverviewSection: React.FC = () => {
   return (
     <section className="py-16 sm:py-20 lg:py-24 bg-[#050505] border-t border-white/5 relative overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-6 mb-8 sm:mb-12">
-        <div className="flex items-center gap-4 sm:gap-6">
-          <div className="bg-zinc-900 px-4 py-1.5 rounded-sm text-[11px] sm:text-[12px] font-black mono text-zinc-500 tracking-[0.2em] sm:tracking-[0.3em] uppercase border border-white/5">
-            Araç: SYSTEM LOGIC
-          </div>
-          <div className="h-px bg-white/5 flex-1" />
-        </div>
-      </div>
 
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center mb-12 sm:mb-16">
@@ -21,7 +13,7 @@ const SystemOverviewSection: React.FC = () => {
             <span className="text-zinc-600">Dijital Emniyet Kemeriniz.</span>
           </h2>
           <p className="text-base sm:text-lg lg:text-xl text-zinc-400 leading-relaxed font-medium">
-            RoaSell, reklam yönetme sürecinizde sizi kimseye bağlı kalmadan kendi reklamlarınızı yönetebilir hale getirir. 7 yıllık tecrübe ile beslediğimiz algoritmamız sayesinde kampanya düzeyinden reklam düzeyine kadar almanız gereken aksiyonları size sunar.
+            RoaSell, reklam yönetme sürecinizde sizi kimseye bağlı kalmadan kendi reklamlarınızı yönetebilir hale getirir. 1250 mağazanın aktif kullandığı algoritma sayesinde reklam içeriklerinizden, kampanya yapınıza kadar yapmanız gerekenleri size söyler. Yorulmaz, uyumaz ve hiçbir reklamı kaçırmaz.
           </p>
         </div>
 
@@ -32,10 +24,10 @@ const SystemOverviewSection: React.FC = () => {
             <div className="space-y-5 sm:space-y-6 relative">
               <div className="absolute left-5 top-5 bottom-5 w-[1px] bg-white/5" />
               {[
-                { step: "01", text: "Mağazanı bağla ve verilerini entegre et.", icon: <Target className="text-blue-500" /> },
-                { step: "02", text: "Meta reklam hesabını bağla ve algoritmaya kendini tanıt.", icon: <Zap className="text-yellow-500" /> },
-                { step: "03", text: "Reklam analizini başlat ve algoritma ile karşılaştır.", icon: <Activity className="text-red-500" /> },
-                { step: "04", text: "ROI+ büyüme için hatasız reklam yönetimini sürdür.", icon: <ShieldCheck className="text-emerald-500" /> }
+                { step: "01", text: "Reklam hesabını bağla ve verilerini entegre et.", icon: <Target className="text-blue-500" /> },
+                { step: "02", text: "Algoritmaya sektörünü ve reklamlarını tanıt.", icon: <Zap className="text-yellow-500" /> },
+                { step: "03", text: "Reklam analizini başlat ve tüm reklamlarını 2, 7, 30 günlük pencereler için analiz ettir.", icon: <Activity className="text-red-500" /> },
+                { step: "04", text: "Reklam verimliğini artırman için yapman gerekenleri kendi panelinden öğren.", icon: <ShieldCheck className="text-emerald-500" /> }
               ].map((item, i) => (
                 <div key={i} className="flex gap-4 items-start relative z-10">
                   <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-white/5 flex items-center justify-center shrink-0">
@@ -57,7 +49,12 @@ const SystemOverviewSection: React.FC = () => {
                 Bu Kimin İçin?
               </h3>
               <ul className="space-y-3">
-                {["Shopify'a yeni başlayanlar", "Sermayesini kaybetmekten korkanlar", "Tahmine değil, veriye dayalı ilerlemek isteyenler"].map((item, i) => (
+                {[
+                  "Meta reklamlarını kullananlar.",
+                  "Reklam bütçesini verimli kullanmak isteyenler.",
+                  "Tahmine değil, veriye dayalı ilerlemek isteyenler.",
+                  "Dijital pazarlama ajanslarının kör kurşunundan sıkılanlar."
+                ].map((item, i) => (
                   <li key={i} className="flex items-center gap-3 text-zinc-400 font-medium text-sm sm:text-base">
                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                     {item}
@@ -72,7 +69,11 @@ const SystemOverviewSection: React.FC = () => {
                 Bu Kimin İçin DEĞİL?
               </h3>
               <ul className="space-y-3">
-                {["Pazaryeri satıcıları", "Offline Tüccarlar", "Paralı trafiğe ihtiyaç duymayanlar"].map((item, i) => (
+                {[
+                  "Pazaryeri satıcıları",
+                  "Offline Tüccarlar",
+                  "Meta reklamları kullanmayanlar."
+                ].map((item, i) => (
                   <li key={i} className="flex items-center gap-3 text-zinc-500 font-medium text-sm sm:text-base">
                     <div className="w-1.5 h-1.5 rounded-full bg-red-500" />
                     {item}
@@ -86,7 +87,7 @@ const SystemOverviewSection: React.FC = () => {
         <div className="text-center">
           <button
             onClick={() => window.dispatchEvent(new Event('openPaymentModal'))}
-            className="px-8 sm:px-10 py-4 sm:py-5 bg-blue-600 text-white font-black rounded-xl hover:bg-blue-500 transition-all shadow-[0_15px_30px_rgba(37,99,235,0.2)] text-base sm:text-lg tracking-tighter active:scale-95 group"
+            className="px-6 sm:px-10 py-4 sm:py-5 bg-blue-600 text-white font-black rounded-xl hover:bg-blue-500 transition-all shadow-[0_15px_30px_rgba(37,99,235,0.2)] text-sm sm:text-lg tracking-tighter active:scale-95 group whitespace-nowrap"
           >
             3 Gün $1 — Reklamlarını Analiz Et
             <ArrowRight className="inline-block ml-2 group-hover:translate-x-2 transition-transform" />

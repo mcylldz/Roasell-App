@@ -51,7 +51,7 @@ const BenefitsSection: React.FC = () => {
               <span className="text-zinc-600 italic">körlemesine para harcama.</span>
             </h2>
             <p className="text-base sm:text-lg text-zinc-400 max-w-xl mx-auto">
-              RoaSell, Meta reklamlarını analiz ederek sana <strong className="text-white">ne yapman gerektiğini</strong> en sade haliyle söyler.
+              RoaSell, reklamlarını tüm verileriyle analiz ederek ne yapman gerektiğini söyler. <strong className="text-white">Her bir kuruşun verimli harcanmasını sağlar.</strong>
             </p>
           </div>
 

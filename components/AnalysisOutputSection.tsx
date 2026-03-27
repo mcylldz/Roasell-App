@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ThumbsUp, AlertTriangle, TrendingUp, ArrowRight, Zap, Eye } from 'lucide-react';
+import { ThumbsUp, AlertTriangle, TrendingUp, ArrowRight, Zap, Eye, ExternalLink } from 'lucide-react';
 
 const AnalysisOutputSection: React.FC = () => {
   const cards = [
@@ -15,14 +15,14 @@ const AnalysisOutputSection: React.FC = () => {
       accent: 'emerald',
     },
     {
-      status: 'warning',
+      status: 'danger',
       statusLabel: 'UCUZ TRAFİK VAR, SATIŞ ZAYIF: İKNA/DÖNÜŞÜM KIRILIYOR',
       confidence: 58,
       campaignName: 'ERKEK AKSESUAR / RETARGETING / DAR HEDEFLİ',
       analysis:
-        '110.26 harcamada 1 sipariş ve ROAS 1.03 ile kârlılık sınırda. En baskın sinyal: çok ucuz doğrudan sitenize giden tıklamaya (0.09) rağmen dönüşüm oranının düşük kalması (0.08) ve ödemeye yeltenmenin 1\'de kalması; yani ilgi var ama satın alma niyeti yeterince derinleşmiyor.',
-      action: 'Bütçeyi sabit tut ve izlemeye al; aynı hedefleme korunarak daha güçlü teklif/güven kanıtı içeren kreatif varyasyonlarını paralel test et.',
-      accent: 'yellow',
+        '110.26 harcamada 1 sipariş ve ROAS 1.03 ile zarar yazıyor. En baskın sinyal: çok ucuz doğrudan sitenize giden tıklamaya (0.09) rağmen dönüşüm oranının düşük kalması (0.08) ve ödemeye yeltenmenin 1\'de kalması; reklamdan gelen kitle ucuz ama satın almıyor. Ürün sayfası diğer reklamlarda daha stabil (%3) sonuç veriyor, bu yüzden bu reklam içeriğinin çektiği kitle kalitesiz.',
+      action: 'Reklamı kapat, kreatifin hook\'unu ve içeriğini analiz et ve elementleri değiştir. (Reklam viral olmuş, fakat getirdiği kitle yanlış)',
+      accent: 'red',
     },
     {
       status: 'warning',
@@ -31,8 +31,8 @@ const AnalysisOutputSection: React.FC = () => {
       campaignName: 'KIŞ KOLEKSİYON CBO / 1200 / 1',
       analysis:
         '50.26 harcamada 4 sipariş ve ROAS 20.63 gibi olağanüstü bir değer var; sipariş başı maliyet 12.57. En baskın sinyal bu kadar düşük harcamada bu kadar yüksek ROAS\'ın "spike/tesadüfi dağılım" olma ihtimali. Düşük harcama hacmi, performansın tekrarlanabilirliğini kanıtlamıyor.',
-      action: 'Devam ettir ve izlemeye al; bütçeyi sabit tut, veri birikmesini bekle ve aynı açıyla kreatif varyasyonlarını paralel test et.',
-      accent: 'red',
+      action: 'Devam ettir ve izlemeye al; bütçeyi sabit tut, veri birikmesini bekle. Buradaki veriler olgunlaştıktan sonra ölçeklenme kararına tekrar bakacağız.',
+      accent: 'yellow',
     },
   ];
 
@@ -46,14 +46,17 @@ const AnalysisOutputSection: React.FC = () => {
           <div className="text-center mb-10 sm:mb-14 space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[9px] sm:text-[10px] font-black mono tracking-[0.2em] sm:tracking-[0.3em] uppercase">
               <Eye size={12} />
-              GERÇEK ANALİZ ÇIKTILARI
+              GERÇEK ANALİZ SONUÇLARINA GÖZ ATIN
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter leading-[0.9]">
-              Yapay zeka her reklamı <br />
-              <span className="text-zinc-600 italic">böyle analiz ediyor.</span>
+              Sistemin nasıl çalıştığını <br />
+              <span className="text-zinc-600 italic">görün:</span>
             </h2>
             <p className="text-base sm:text-lg text-zinc-400 max-w-2xl mx-auto">
-              Meta hesabını bağladığın anda tüm kampanyaların taranır. Her reklam için net bir karar alırsın: <strong className="text-white">ölçekle, kapat veya revize et.</strong>
+              Reklam hesabını bağlarsın. Tüm reklamların analiz edilir. 2 gün, 7 gün, 30 günlük reklam sonuçları baz alınır ve sana her reklam için yapılacaklar net olarak söylenir. Kapatman gereken reklamlar araya kaynamaz, kâr eden reklamlar kenarda oturmaz; performansı bozulmak üzere olan reklamlar için yapılacaklar önüne serilir.
+            </p>
+            <p className="text-sm text-blue-400 font-bold italic">
+              Ajansa ve uzmana bağlılığı bitirir, kontrolü size verir.
             </p>
           </div>
 
@@ -111,20 +114,26 @@ const AnalysisOutputSection: React.FC = () => {
 
                 {/* Card Body */}
                 <div className="px-4 sm:px-6 py-5 sm:py-6 space-y-4">
-                  {/* Campaign Name */}
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-white/5 flex items-center justify-center shrink-0">
-                      {card.accent === 'emerald' ? (
-                        <TrendingUp size={14} className="text-emerald-500" />
-                      ) : card.accent === 'red' ? (
-                        <AlertTriangle size={14} className="text-red-500" />
-                      ) : (
-                        <AlertTriangle size={14} className="text-yellow-500" />
-                      )}
+                  {/* Campaign Name + View Button */}
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-white/5 flex items-center justify-center shrink-0">
+                        {card.accent === 'emerald' ? (
+                          <TrendingUp size={14} className="text-emerald-500" />
+                        ) : card.accent === 'red' ? (
+                          <AlertTriangle size={14} className="text-red-500" />
+                        ) : (
+                          <AlertTriangle size={14} className="text-yellow-500" />
+                        )}
+                      </div>
+                      <span className="text-xs sm:text-sm font-black mono text-zinc-300 uppercase tracking-wide truncate">
+                        {card.campaignName}
+                      </span>
                     </div>
-                    <span className="text-xs sm:text-sm font-black mono text-zinc-300 uppercase tracking-wide truncate">
-                      {card.campaignName}
-                    </span>
+                    <button className="shrink-0 flex items-center gap-1 text-[10px] sm:text-[11px] font-bold text-zinc-500 hover:text-blue-400 transition-colors">
+                      <ExternalLink size={11} />
+                      <span className="hidden sm:inline">Reklamı Görüntüle</span>
+                    </button>
                   </div>
 
                   {/* Analysis Text */}
@@ -135,12 +144,12 @@ const AnalysisOutputSection: React.FC = () => {
                   {/* Action Button */}
                   <div className="pl-10">
                     <button
-                      className={`px-5 py-2.5 rounded-lg font-black text-xs sm:text-sm uppercase tracking-wider transition-all active:scale-[0.98] ${
+                      className={`px-5 py-2.5 rounded-lg font-black text-xs sm:text-sm tracking-wider transition-all active:scale-[0.98] text-left ${
                         card.accent === 'emerald'
                           ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-500'
                           : card.accent === 'red'
-                          ? 'bg-red-600/80 text-white shadow-lg shadow-red-500/20 hover:bg-red-500'
-                          : 'bg-yellow-600/80 text-white shadow-lg shadow-yellow-500/20 hover:bg-yellow-500'
+                          ? 'bg-red-600 text-white shadow-lg shadow-red-500/20 hover:bg-red-500'
+                          : 'bg-yellow-600 text-white shadow-lg shadow-yellow-500/20 hover:bg-yellow-500'
                       }`}
                     >
                       {card.action}
