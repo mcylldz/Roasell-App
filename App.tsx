@@ -42,21 +42,25 @@ const App: React.FC = () => {
 
   // Simple pathname-based routing
   const pathname = window.location.pathname;
-  if (pathname === '/abonelik') return <AbonelikPage />;
+  const isAbonelik = pathname === '/abonelik';
 
   useEffect(() => {
+    if (isAbonelik) return;
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isAbonelik]);
 
   useEffect(() => {
+    if (isAbonelik) return;
     const handleOpenModal = () => setIsPaymentModalOpen(true);
     window.addEventListener('openPaymentModal', handleOpenModal);
     return () => window.removeEventListener('openPaymentModal', handleOpenModal);
-  }, []);
+  }, [isAbonelik]);
+
+  if (isAbonelik) return <AbonelikPage />;
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);

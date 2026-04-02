@@ -22,6 +22,9 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
     // Track if potential customer data was sent already
     const potentialSentRef = useRef(false);
 
+    // ── NEW: Prevent double-submit after payment is confirmed ──
+    const paymentCompletedRef = useRef(false);
+
     // When component unmounts (modal closed) without success, send potential lead
     useEffect(() => {
         return () => {
@@ -33,7 +36,7 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
                     event: 'payment_abandoned',
                     timestamp: new Date().toISOString(),
                 };
-                navigator.sendBeacon(WEBHOOK_POTENTIAL, JSON.stringify(payload));
+                navigator.sendBeacon(WEBHOOK_POTENTIAL, new Blob([JSON.stringify(payload)], { type: 'application/json' }));
             }
         };
     }, [name, email, phone]);
@@ -63,7 +66,8 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
-        if (!stripe || !elements) return;
+        // ── Guard: block if already processing or payment already completed ──
+        if (!stripe || !elements || isProcessing || paymentCompletedRef.current) return;
 
         const formattedPhone = phone.startsWith('0') ? phone : `0${phone}`;
 
@@ -105,11 +109,6 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
                     email,
                     phone: formattedPhone,
                     paymentMethodId: paymentMethod.id,
-                    metadata: {
-                        customerEmail: email,
-                        customerName: name,
-                        customerPhone: formattedPhone,
-                    },
                 }),
             });
 
@@ -119,37 +118,74 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
                 throw new Error(data.error || 'Abonelik oluşturulamadı.');
             }
 
-            const { error: confirmError } = data.trialPaymentStatus === 'succeeded'
-                ? { error: null }
-                : await stripe.confirmCardPayment(data.clientSecret);
+            // Step 2: Confirm the $1 payment on the frontend (handles 3DS too)
+            const { error: confirmError } = await stripe.confirmCardPayment(data.clientSecret);
 
             if (confirmError) {
                 setErrorMessage(confirmError.message || 'Ödeme onaylanamadı.');
                 sendPotentialLead({ name, email, phone: formattedPhone, reason: 'payment_confirm_error' });
-            } else {
-                potentialSentRef.current = true;
-                onSuccess();
+                setIsProcessing(false);
+                return;
+            }
 
-                fetch(WEBHOOK_SUCCESS, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
+            // ── Payment confirmed — permanently block re-submission ──
+            paymentCompletedRef.current = true;
+
+            // Step 3: Payment succeeded — now create Customer + Subscription
+            const finalizeRes = await fetch('/.netlify/functions/finalize-subscription', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ paymentIntentId: data.paymentIntentId }),
+            });
+
+            const finalizeData = await finalizeRes.json();
+
+            if (!finalizeRes.ok) {
+                // Payment taken but sub creation failed — notify support via webhook
+                potentialSentRef.current = true; // prevent duplicate on unmount
+                navigator.sendBeacon(
+                    WEBHOOK_SUCCESS,
+                    new Blob([JSON.stringify({
                         customerName: name,
                         customerEmail: email,
                         customerPhone: formattedPhone,
-                        subscriptionId: data.subscriptionId,
-                        event: 'payment_success',
+                        paymentIntentId: data.paymentIntentId,
+                        event: 'payment_succeeded_but_subscription_failed',
+                        error: finalizeData.error || 'finalize-subscription failed',
                         timestamp: new Date().toISOString(),
-                    }),
-                }).catch((webhookErr) => {
-                    console.error('[Webhook] Success webhook failed:', webhookErr);
-                });
+                    })], { type: 'application/json' })
+                );
+                setErrorMessage(finalizeData.error || 'Ödemeniz alındı ancak abonelik kaydedilirken hata oluştu. Lütfen destek ile iletişime geçin — tekrar ödeme yapmayın.');
+                setIsProcessing(false);
+                return;
             }
+
+            // Success! Send webhook BEFORE page transition using sendBeacon
+            // (sendBeacon is guaranteed to complete even during page unload/navigation)
+            potentialSentRef.current = true;
+
+            navigator.sendBeacon(
+                WEBHOOK_SUCCESS,
+                new Blob([JSON.stringify({
+                    customerName: name,
+                    customerEmail: email,
+                    customerPhone: formattedPhone,
+                    subscriptionId: finalizeData.subscriptionId,
+                    event: 'payment_success',
+                    timestamp: new Date().toISOString(),
+                })], { type: 'application/json' })
+            );
+
+            onSuccess();
+
         } catch (err: any) {
             setErrorMessage(err.message || 'Beklenmeyen bir hata oluştu.');
             sendPotentialLead({ name, email, phone: formattedPhone, reason: 'unexpected_error' });
         } finally {
-            setIsProcessing(false);
+            // Only re-enable if payment was NOT completed (pre-payment errors)
+            if (!paymentCompletedRef.current) {
+                setIsProcessing(false);
+            }
         }
     };
 
