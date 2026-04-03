@@ -36,7 +36,12 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
                     event: 'payment_abandoned',
                     timestamp: new Date().toISOString(),
                 };
-                navigator.sendBeacon(WEBHOOK_POTENTIAL, new Blob([JSON.stringify(payload)], { type: 'application/json' }));
+                fetch(WEBHOOK_POTENTIAL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                    keepalive: true,
+                }).catch(() => {});
             }
         };
     }, [name, email, phone]);
@@ -143,9 +148,10 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
             if (!finalizeRes.ok) {
                 // Payment taken but sub creation failed — notify support via webhook
                 potentialSentRef.current = true; // prevent duplicate on unmount
-                navigator.sendBeacon(
-                    WEBHOOK_SUCCESS,
-                    new Blob([JSON.stringify({
+                fetch(WEBHOOK_SUCCESS, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
                         customerName: name,
                         customerEmail: email,
                         customerPhone: formattedPhone,
@@ -153,8 +159,9 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
                         event: 'payment_succeeded_but_subscription_failed',
                         error: finalizeData.error || 'finalize-subscription failed',
                         timestamp: new Date().toISOString(),
-                    })], { type: 'application/json' })
-                );
+                    }),
+                    keepalive: true,
+                }).catch(() => {});
                 setErrorMessage(finalizeData.error || 'Ödemeniz alındı ancak abonelik kaydedilirken hata oluştu. Lütfen destek ile iletişime geçin — tekrar ödeme yapmayın.');
                 setIsProcessing(false);
                 return;
@@ -164,17 +171,19 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
             // (sendBeacon is guaranteed to complete even during page unload/navigation)
             potentialSentRef.current = true;
 
-            navigator.sendBeacon(
-                WEBHOOK_SUCCESS,
-                new Blob([JSON.stringify({
+            fetch(WEBHOOK_SUCCESS, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
                     customerName: name,
                     customerEmail: email,
                     customerPhone: formattedPhone,
                     subscriptionId: finalizeData.subscriptionId,
                     event: 'payment_success',
                     timestamp: new Date().toISOString(),
-                })], { type: 'application/json' })
-            );
+                }),
+                keepalive: true,
+            }).catch(() => {});
 
             onSuccess();
 
