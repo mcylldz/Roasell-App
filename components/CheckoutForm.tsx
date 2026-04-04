@@ -134,7 +134,9 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
             }
 
             // Confirm the $1 payment on the frontend (handles 3DS too)
-            const { error: confirmError } = await stripe.confirmCardPayment(data.clientSecret);
+            const { error: confirmError } = await stripe.confirmCardPayment(data.clientSecret, {
+                payment_method: paymentMethod.id,
+            });
 
             if (confirmError) {
                 setErrorMessage(confirmError.message || 'Ödeme onaylanamadı.');

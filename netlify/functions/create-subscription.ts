@@ -101,11 +101,13 @@ export const handler: Handler = async (event) => {
         const cleanPhone = typeof phone === 'string' ? phone.replace(/\D/g, '').slice(0, 15) : '';
         const safeEmail = escapeStripeQuery(cleanEmail);
 
-        // ── 1) Email check: block if an existing customer has a SUCCESSFUL subscription ──
+        // ── 1) Email check: block if active, reuse if incomplete ──
         const existingByEmail = await stripe.customers.search({
             query: `email:'${safeEmail}'`,
             limit: 5,
         });
+
+        let reuseCustomer: Stripe.Customer | null = null;
 
         for (const c of existingByEmail.data) {
             if (await hasSuccessfulSubscription(c.id)) {
@@ -115,6 +117,25 @@ export const handler: Handler = async (event) => {
                     headers: corsHeaders,
                     body: JSON.stringify({ error: 'Bu e-posta adresiyle daha önce bir deneme kullanılmış.' }),
                 };
+            }
+
+            // Cancel incomplete subscriptions from previous failed attempts
+            const incompleteSubs = await stripe.subscriptions.list({
+                customer: c.id,
+                status: 'incomplete',
+                limit: 10,
+            });
+            for (const s of incompleteSubs.data) {
+                try {
+                    await stripe.subscriptions.cancel(s.id);
+                    console.log(`[cleanup] Cancelled incomplete sub ${s.id} for ${cleanEmail}`);
+                } catch (e) {
+                    console.warn(`[cleanup] Failed to cancel sub ${s.id}:`, e);
+                }
+            }
+
+            if (!reuseCustomer) {
+                reuseCustomer = c as Stripe.Customer;
             }
         }
 
@@ -140,18 +161,17 @@ export const handler: Handler = async (event) => {
             }
         }
 
-        // ── 3) Create Customer with PM attached ──
-        const idempotencyBase = crypto
-            .createHash('sha256')
-            .update(`trial_${cleanEmail}_${paymentMethodId}`)
-            .digest('hex');
+        // ── 3) Reuse existing customer or create new one ──
+        let customer: Stripe.Customer;
 
-        const customer = await stripe.customers.create(
-            {
+        if (reuseCustomer) {
+            // Attach new payment method and update customer details
+            await stripe.paymentMethods.attach(paymentMethodId as string, {
+                customer: reuseCustomer.id,
+            });
+            customer = await stripe.customers.update(reuseCustomer.id, {
                 name: cleanName,
-                email: cleanEmail,
                 phone: cleanPhone || undefined,
-                payment_method: paymentMethodId as string,
                 invoice_settings: { default_payment_method: paymentMethodId as string },
                 metadata: {
                     customerEmail: cleanEmail,
@@ -159,17 +179,41 @@ export const handler: Handler = async (event) => {
                     customerPhone: cleanPhone,
                     ...(cardFingerprint ? { trial_card_fingerprint: cardFingerprint } : {}),
                 },
-            },
-            { idempotencyKey: `customer_${idempotencyBase}` },
-        );
+            });
+            console.log(`[create-subscription] Reusing customer ${customer.id} for ${cleanEmail}`);
+        } else {
+            const idempotencyBase = crypto
+                .createHash('sha256')
+                .update(`trial_${cleanEmail}_${cardFingerprint || paymentMethodId}`)
+                .digest('hex');
+
+            customer = await stripe.customers.create(
+                {
+                    name: cleanName,
+                    email: cleanEmail,
+                    phone: cleanPhone || undefined,
+                    payment_method: paymentMethodId as string,
+                    invoice_settings: { default_payment_method: paymentMethodId as string },
+                    metadata: {
+                        customerEmail: cleanEmail,
+                        customerName: cleanName,
+                        customerPhone: cleanPhone,
+                        ...(cardFingerprint ? { trial_card_fingerprint: cardFingerprint } : {}),
+                    },
+                },
+                { idempotencyKey: `customer_${idempotencyBase}` },
+            );
+        }
 
         // ── 4) Get product ID from subscription price (needed for $1 invoice item) ──
         const subscriptionPrice = await stripe.prices.retrieve(process.env.STRIPE_PRICE_ID as string);
 
         // ── 5) Create Subscription: 3-day trial + $1 setup fee on first invoice ──
-        //   The $1 is part of the subscription's first invoice (not a standalone PI).
-        //   3DS authentication here creates a recurring mandate for the subscription,
-        //   so the $47 charge after trial ends won't require 3DS again.
+        const subIdempotencyBase = crypto
+            .createHash('sha256')
+            .update(`sub_${cleanEmail}_${paymentMethodId}`)
+            .digest('hex');
+
         const subscription = await stripe.subscriptions.create(
             {
                 customer: customer.id,
@@ -193,7 +237,7 @@ export const handler: Handler = async (event) => {
                     customerName: cleanName,
                 },
             },
-            { idempotencyKey: `subscription_${idempotencyBase}` },
+            { idempotencyKey: `subscription_${subIdempotencyBase}` },
         );
 
         const invoice = subscription.latest_invoice as Stripe.Invoice;
