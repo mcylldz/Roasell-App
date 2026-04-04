@@ -109,8 +109,8 @@
     <!-- Facebook Pixel — PageView (body sonu, eventID ile) -->
     <script>
         (function () {
-            if (window.__PV_SENT__) return;
-            window.__PV_SENT__ = true;
+            if (sessionStorage.getItem('__pv_sent')) return;
+            sessionStorage.setItem('__pv_sent', '1');
 
             function uuidv4() {
                 return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {

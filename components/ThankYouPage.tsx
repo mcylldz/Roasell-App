@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
 import { CheckCircle2, Mail, ArrowRight } from 'lucide-react';
 
-// Facebook Pixel helpers
-declare global { interface Window { fbq?: (...args: any[]) => void; __PURCHASE_PIXEL_SENT?: boolean; } }
-
 function uuidv4() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
@@ -11,22 +8,59 @@ function uuidv4() {
     });
 }
 
-const ThankYouPage: React.FC = () => {
+function getCookie(name: string): string | null {
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? decodeURIComponent(match[2]) : null;
+}
+
+interface ThankYouPageProps {
+    customerName: string;
+    customerEmail: string;
+    customerPhone: string;
+}
+
+const ThankYouPage: React.FC<ThankYouPageProps> = ({ customerName, customerEmail, customerPhone }) => {
     useEffect(() => {
         // Guard — React strict mode + aynı session'da çift tetiklenmeyi önle
         if (sessionStorage.getItem('__purchase_pixel_sent')) return;
         sessionStorage.setItem('__purchase_pixel_sent', '1');
 
         const event_id = uuidv4();
+        const nameParts = customerName.trim().split(/\s+/);
+        const firstName = (nameParts[0] || '').toLowerCase();
+        const lastName = (nameParts.slice(1).join(' ') || '').toLowerCase();
+        const cleanPhone = customerPhone.replace(/\D/g, '');
+        const cleanEmail = customerEmail.toLowerCase().trim();
 
-        const sendPurchasePixel = () => {
+        // Read Meta cookies for verification
+        const fbp = getCookie('_fbp');
+        const fbc = getCookie('_fbc');
+
+        console.log('[Meta Pixel] Advanced Matching data:', {
+            em: cleanEmail, fn: firstName, ln: lastName, ph: cleanPhone,
+            fbp: fbp || '(auto from cookie)', fbc: fbc || '(no fbclid click)',
+            ua: 'auto from browser', ip: 'auto from request',
+        });
+
+        // Re-init pixel with Advanced Matching — kullanıcı verilerini Meta'ya bağla
+        // fbp, fbc, user_agent, ip_address pixel tarafından otomatik gönderilir
+        const updatePixelAndSend = () => {
             if (window.fbq) {
+                window.fbq('init', '170135295273206', {
+                    em: cleanEmail,
+                    fn: firstName,
+                    ln: lastName,
+                    ph: cleanPhone,
+                    country: 'tr',
+                    external_id: cleanEmail,
+                });
+
                 window.fbq('track', 'Purchase', {
-                    value: 1,           // $1 trial fee
+                    value: 47,
                     currency: 'USD',
                     content_type: 'product',
-                    content_ids: ['roasell-app-trial'],
-                    client_user_agent: navigator.userAgent,
+                    content_ids: ['roasell-app-subscription'],
+                    content_name: 'Roasell App Subscription',
                 }, {
                     eventID: event_id,
                 });
@@ -36,16 +70,16 @@ const ThankYouPage: React.FC = () => {
         };
 
         // fbq yüklüyse hemen gönder, yoksa max 3sn retry yap
-        if (!sendPurchasePixel()) {
+        if (!updatePixelAndSend()) {
             let attempts = 0;
             const interval = setInterval(() => {
                 attempts++;
-                if (sendPurchasePixel() || attempts >= 15) {
+                if (updatePixelAndSend() || attempts >= 15) {
                     clearInterval(interval);
                 }
-            }, 200); // her 200ms'de dene, max 15 × 200ms = 3sn
+            }, 200);
         }
-    }, []);
+    }, [customerName, customerEmail, customerPhone]);
 
     return (
         <div className="min-h-screen bg-[#050505] flex items-center justify-center p-4">

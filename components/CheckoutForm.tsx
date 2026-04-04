@@ -4,8 +4,17 @@ import { Loader2, ArrowRight, ArrowLeft, User, CreditCard, CheckCircle2, Shield 
 
 const WEBHOOK_PROXY = '/.netlify/functions/notify-webhook';
 
+// Meta Pixel global type
+declare global { interface Window { fbq?: (...args: any[]) => void; } }
+
+interface CustomerData {
+    name: string;
+    email: string;
+    phone: string;
+}
+
 interface CheckoutFormProps {
-    onSuccess: () => void;
+    onSuccess: (data: CustomerData) => void;
 }
 
 export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
@@ -74,6 +83,25 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
         // Send potential lead data when moving to step 2
         const formattedPhone = phone.startsWith('0') ? phone : `0${phone}`;
         sendPotentialLead({ name, email, phone: formattedPhone, reason: 'step1_completed' });
+
+        // Fire InitiateCheckout pixel event
+        if (window.fbq) {
+            const nameParts = name.trim().split(/\s+/);
+            window.fbq('init', '170135295273206', {
+                em: email.toLowerCase().trim(),
+                fn: (nameParts[0] || '').toLowerCase(),
+                ln: (nameParts.slice(1).join(' ') || '').toLowerCase(),
+                ph: formattedPhone.replace(/\D/g, ''),
+                country: 'tr',
+            });
+            window.fbq('track', 'InitiateCheckout', {
+                value: 47,
+                currency: 'USD',
+                content_type: 'product',
+                content_ids: ['roasell-app-subscription'],
+                content_name: 'Roasell App Subscription',
+            });
+        }
 
         setStep(2);
     };
@@ -167,7 +195,7 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
             }).catch(() => {});
 
             // Transition to ThankYouPage — pixel fires there (stable, mounted component)
-            onSuccess();
+            onSuccess({ name, email, phone: formattedPhone });
 
         } catch (err: any) {
             setErrorMessage(err.message || 'Beklenmeyen bir hata oluştu.');

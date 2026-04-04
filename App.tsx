@@ -39,6 +39,7 @@ const App: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [showThankYou, setShowThankYou] = useState(false);
+  const [customerData, setCustomerData] = useState<{ name: string; email: string; phone: string } | null>(null);
 
   // Simple pathname-based routing
   const pathname = window.location.pathname;
@@ -70,8 +71,8 @@ const App: React.FC = () => {
   };
 
   // Show thank you page after successful payment
-  if (showThankYou) {
-    return <ThankYouPage />;
+  if (showThankYou && customerData) {
+    return <ThankYouPage customerName={customerData.name} customerEmail={customerData.email} customerPhone={customerData.phone} />;
   }
 
   return (
@@ -217,8 +218,9 @@ const App: React.FC = () => {
       <PaymentModal
         isOpen={isPaymentModalOpen}
         onClose={() => setIsPaymentModalOpen(false)}
-        onPaymentSuccess={() => {
+        onPaymentSuccess={(data) => {
           setIsPaymentModalOpen(false);
+          setCustomerData(data);
           setShowThankYou(true);
           window.scrollTo({ top: 0, behavior: 'instant' });
         }}

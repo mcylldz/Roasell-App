@@ -12,7 +12,7 @@ const stripePromise = loadStripe(
 interface PaymentModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onPaymentSuccess: () => void;
+    onPaymentSuccess: (data: { name: string; email: string; phone: string }) => void;
 }
 
 export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, onPaymentSuccess }) => {
