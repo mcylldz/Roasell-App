@@ -25,14 +25,25 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
     // ── NEW: Prevent double-submit after payment is confirmed ──
     const paymentCompletedRef = useRef(false);
 
+    // Refs to capture latest values for unmount cleanup
+    const nameRef = useRef(name);
+    const emailRef = useRef(email);
+    const phoneRef = useRef(phone);
+    useEffect(() => { nameRef.current = name; }, [name]);
+    useEffect(() => { emailRef.current = email; }, [email]);
+    useEffect(() => { phoneRef.current = phone; }, [phone]);
+
     // When component unmounts (modal closed) without success, send potential lead
     useEffect(() => {
         return () => {
-            if (!potentialSentRef.current && (name || email || phone)) {
+            const n = nameRef.current;
+            const e = emailRef.current;
+            const p = phoneRef.current;
+            if (!potentialSentRef.current && (n || e || p)) {
                 const payload = {
-                    customerName: name,
-                    customerEmail: email,
-                    customerPhone: phone.startsWith('0') ? phone : `0${phone}`,
+                    customerName: n,
+                    customerEmail: e,
+                    customerPhone: p.startsWith('0') ? p : `0${p}`,
                     event: 'payment_abandoned',
                     timestamp: new Date().toISOString(),
                 };
@@ -44,7 +55,7 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
                 }).catch(() => {});
             }
         };
-    }, [name, email, phone]);
+    }, []);
 
     // Format phone to 05... format
     const formatPhone = (val: string) => {
