@@ -2,8 +2,41 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 import { Loader2, ArrowRight, ArrowLeft, User, CreditCard, CheckCircle2, Shield } from 'lucide-react';
 
+declare global { interface Window { fbq?: (...args: any[]) => void; } }
+
 const WEBHOOK_SUCCESS = 'https://dtt1z7t3.rcsrv.com/webhook/roasellapp';
 const WEBHOOK_POTENTIAL = 'https://dtt1z7t3.rcsrv.com/webhook/potansiyelapp';
+
+function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
+/** Fire Meta Pixel Purchase event — returns true if fbq was available */
+function firePurchasePixel(): boolean {
+    try {
+        if (window.fbq) {
+            const eventId = uuidv4();
+            window.fbq('track', 'Purchase', {
+                value: 1,
+                currency: 'USD',
+                content_type: 'product',
+                content_ids: ['roasell-app-trial'],
+                client_user_agent: navigator.userAgent,
+            }, {
+                eventID: eventId,
+            });
+            // Mark as sent so ThankYouPage doesn't double-fire
+            sessionStorage.setItem('__purchase_pixel_sent', '1');
+            return true;
+        }
+    } catch (e) {
+        // silent
+    }
+    return false;
+}
 
 interface CheckoutFormProps {
     onSuccess: () => void;
@@ -159,7 +192,7 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
             if (!finalizeRes.ok) {
                 // Payment taken but sub creation failed — notify support via webhook
                 potentialSentRef.current = true; // prevent duplicate on unmount
-                fetch(WEBHOOK_SUCCESS, {
+                await fetch(WEBHOOK_SUCCESS, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -178,11 +211,14 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
                 return;
             }
 
-            // Success! Send webhook BEFORE page transition using sendBeacon
-            // (sendBeacon is guaranteed to complete even during page unload/navigation)
+            // ── All succeeded — fire webhook + pixel BEFORE unmount ──
             potentialSentRef.current = true;
 
-            fetch(WEBHOOK_SUCCESS, {
+            // 1) Fire Meta Pixel Purchase event (sync, instant)
+            firePurchasePixel();
+
+            // 2) Await webhook so it completes before onSuccess unmounts this component
+            await fetch(WEBHOOK_SUCCESS, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -196,6 +232,7 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
                 keepalive: true,
             }).catch(() => {});
 
+            // 3) Now safe to transition — webhook is done, pixel is sent
             onSuccess();
 
         } catch (err: any) {
