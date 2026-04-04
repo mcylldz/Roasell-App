@@ -97,38 +97,44 @@ export const handler: Handler = async (event) => {
             };
         }
 
-        // ── Create Customer ──
-        const customer = await stripe.customers.create({
-            name: cleanName,
-            email: cleanEmail,
-            phone: cleanPhone || undefined,
-            payment_method: paymentMethodId,
-            invoice_settings: { default_payment_method: paymentMethodId },
-            metadata: {
-                customerEmail: cleanEmail,
-                customerName: cleanName,
-                customerPhone: cleanPhone || '',
-                ...(cardFingerprint ? { trial_card_fingerprint: cardFingerprint } : {}),
+        // ── Create Customer (idempotency key prevents duplicates on parallel retries) ──
+        const customer = await stripe.customers.create(
+            {
+                name: cleanName,
+                email: cleanEmail,
+                phone: cleanPhone || undefined,
+                payment_method: paymentMethodId,
+                invoice_settings: { default_payment_method: paymentMethodId },
+                metadata: {
+                    customerEmail: cleanEmail,
+                    customerName: cleanName,
+                    customerPhone: cleanPhone || '',
+                    ...(cardFingerprint ? { trial_card_fingerprint: cardFingerprint } : {}),
+                },
             },
-        });
+            { idempotencyKey: `customer_${paymentIntentId}` },
+        );
 
         // ── Link the PaymentIntent to the new customer ──
         await stripe.paymentIntents.update(paymentIntentId, { customer: customer.id });
 
         // ── Create Subscription with 3-day trial ──
-        const subscription = await stripe.subscriptions.create({
-            customer: customer.id,
-            items: [{ price: process.env.STRIPE_PRICE_ID }],
-            trial_period_days: 3,
-            payment_settings: {
-                payment_method_types: ['card'],
-                save_default_payment_method: 'on_subscription',
+        const subscription = await stripe.subscriptions.create(
+            {
+                customer: customer.id,
+                items: [{ price: process.env.STRIPE_PRICE_ID }],
+                trial_period_days: 3,
+                payment_settings: {
+                    payment_method_types: ['card'],
+                    save_default_payment_method: 'on_subscription',
+                },
+                metadata: {
+                    customerEmail: cleanEmail,
+                    customerName: cleanName,
+                },
             },
-            metadata: {
-                customerEmail: cleanEmail,
-                customerName: cleanName,
-            },
-        });
+            { idempotencyKey: `subscription_${paymentIntentId}` },
+        );
 
         // ── Mark PI as finalized so duplicate calls are idempotent ──
         await stripe.paymentIntents.update(paymentIntentId, {

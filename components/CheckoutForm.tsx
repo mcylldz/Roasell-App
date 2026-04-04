@@ -2,41 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 import { Loader2, ArrowRight, ArrowLeft, User, CreditCard, CheckCircle2, Shield } from 'lucide-react';
 
-declare global { interface Window { fbq?: (...args: any[]) => void; } }
-
-const WEBHOOK_SUCCESS = 'https://dtt1z7t3.rcsrv.com/webhook/roasellapp';
-const WEBHOOK_POTENTIAL = 'https://dtt1z7t3.rcsrv.com/webhook/potansiyelapp';
-
-function uuidv4() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
-}
-
-/** Fire Meta Pixel Purchase event — returns true if fbq was available */
-function firePurchasePixel(): boolean {
-    try {
-        if (window.fbq) {
-            const eventId = uuidv4();
-            window.fbq('track', 'Purchase', {
-                value: 1,
-                currency: 'USD',
-                content_type: 'product',
-                content_ids: ['roasell-app-trial'],
-                client_user_agent: navigator.userAgent,
-            }, {
-                eventID: eventId,
-            });
-            // Mark as sent so ThankYouPage doesn't double-fire
-            sessionStorage.setItem('__purchase_pixel_sent', '1');
-            return true;
-        }
-    } catch (e) {
-        // silent
-    }
-    return false;
-}
+const WEBHOOK_PROXY = '/.netlify/functions/notify-webhook';
 
 interface CheckoutFormProps {
     onSuccess: () => void;
@@ -55,7 +21,7 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
     // Track if potential customer data was sent already
     const potentialSentRef = useRef(false);
 
-    // ── NEW: Prevent double-submit after payment is confirmed ──
+    // Prevent double-submit after payment is confirmed
     const paymentCompletedRef = useRef(false);
 
     // Refs to capture latest values for unmount cleanup
@@ -73,17 +39,17 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
             const e = emailRef.current;
             const p = phoneRef.current;
             if (!potentialSentRef.current && (n || e || p)) {
-                const payload = {
-                    customerName: n,
-                    customerEmail: e,
-                    customerPhone: p.startsWith('0') ? p : `0${p}`,
-                    event: 'payment_abandoned',
-                    timestamp: new Date().toISOString(),
-                };
-                fetch(WEBHOOK_POTENTIAL, {
+                fetch(WEBHOOK_PROXY, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
+                    body: JSON.stringify({
+                        type: 'potential',
+                        customerName: n,
+                        customerEmail: e,
+                        customerPhone: p.startsWith('0') ? p : `0${p}`,
+                        event: 'payment_abandoned',
+                        timestamp: new Date().toISOString(),
+                    }),
                     keepalive: true,
                 }).catch(() => {});
             }
@@ -167,7 +133,7 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
                 throw new Error(data.error || 'Abonelik oluşturulamadı.');
             }
 
-            // Step 2: Confirm the $1 payment on the frontend (handles 3DS too)
+            // Confirm the $1 payment on the frontend (handles 3DS too)
             const { error: confirmError } = await stripe.confirmCardPayment(data.clientSecret);
 
             if (confirmError) {
@@ -177,62 +143,28 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
                 return;
             }
 
-            // ── Payment confirmed — permanently block re-submission ──
+            // ── Payment confirmed — subscription is now 'trialing' ──
             paymentCompletedRef.current = true;
-
-            // Step 3: Payment succeeded — now create Customer + Subscription
-            const finalizeRes = await fetch('/.netlify/functions/finalize-subscription', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ paymentIntentId: data.paymentIntentId }),
-            });
-
-            const finalizeData = await finalizeRes.json();
-
-            if (!finalizeRes.ok) {
-                // Payment taken but sub creation failed — notify support via webhook
-                potentialSentRef.current = true; // prevent duplicate on unmount
-                await fetch(WEBHOOK_SUCCESS, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        customerName: name,
-                        customerEmail: email,
-                        customerPhone: formattedPhone,
-                        paymentIntentId: data.paymentIntentId,
-                        event: 'payment_succeeded_but_subscription_failed',
-                        error: finalizeData.error || 'finalize-subscription failed',
-                        timestamp: new Date().toISOString(),
-                    }),
-                    keepalive: true,
-                }).catch(() => {});
-                setErrorMessage(finalizeData.error || 'Ödemeniz alındı ancak abonelik kaydedilirken hata oluştu. Lütfen destek ile iletişime geçin — tekrar ödeme yapmayın.');
-                setIsProcessing(false);
-                return;
-            }
-
-            // ── All succeeded — fire webhook + pixel BEFORE unmount ──
             potentialSentRef.current = true;
 
-            // 1) Fire Meta Pixel Purchase event (sync, instant)
-            firePurchasePixel();
-
-            // 2) Await webhook so it completes before onSuccess unmounts this component
-            await fetch(WEBHOOK_SUCCESS, {
+            // Send success webhook via server-side proxy (no CORS issues)
+            await fetch(WEBHOOK_PROXY, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
+                    type: 'success',
                     customerName: name,
                     customerEmail: email,
                     customerPhone: formattedPhone,
-                    subscriptionId: finalizeData.subscriptionId,
+                    subscriptionId: data.subscriptionId,
+                    customerId: data.customerId,
                     event: 'payment_success',
                     timestamp: new Date().toISOString(),
                 }),
                 keepalive: true,
             }).catch(() => {});
 
-            // 3) Now safe to transition — webhook is done, pixel is sent
+            // Transition to ThankYouPage — pixel fires there (stable, mounted component)
             onSuccess();
 
         } catch (err: any) {
@@ -377,13 +309,14 @@ export const CheckoutForm = ({ onSuccess }: CheckoutFormProps) => {
     );
 };
 
-// Helper: fire-and-forget potential lead webhook
+// Helper: send potential lead webhook via server-side proxy
 function sendPotentialLead(data: { name: string; email: string; phone: string; reason: string }) {
     if (!data.name && !data.email && !data.phone) return;
-    fetch(WEBHOOK_POTENTIAL, {
+    fetch(WEBHOOK_PROXY, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+            type: 'potential',
             customerName: data.name,
             customerEmail: data.email,
             customerPhone: data.phone,

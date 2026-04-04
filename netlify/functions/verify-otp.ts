@@ -17,6 +17,10 @@ const ALLOWED_ORIGINS = [
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
+function escapeStripeQuery(val: string): string {
+    return val.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+}
+
 export const handler: Handler = async (event) => {
     const origin = event.headers['origin'] || event.headers['Origin'] || '';
     const corsOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : '';
@@ -94,7 +98,7 @@ export const handler: Handler = async (event) => {
 
         // OTP verified — fetch Stripe subscription data
         const customers = await stripe.customers.search({
-            query: `email:'${cleanEmail}'`,
+            query: `email:'${escapeStripeQuery(cleanEmail)}'`,
             limit: 1,
         });
 

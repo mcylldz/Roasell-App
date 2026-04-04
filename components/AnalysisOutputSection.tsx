@@ -50,7 +50,7 @@ const AnalysisOutputSection: React.FC = () => {
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter leading-[0.9]">
               Sistemin nasıl çalıştığını <br />
-              <span className="text-zinc-600 italic">görün:</span>
+              <span className="text-zinc-600 italic">görün.</span>
             </h2>
             <p className="text-base sm:text-lg text-zinc-400 max-w-2xl mx-auto">
               Reklam hesabını bağlarsın. Tüm reklamların analiz edilir. 2 gün, 7 gün, 30 günlük reklam sonuçları baz alınır ve sana her reklam için yapılacaklar net olarak söylenir. Kapatman gereken reklamlar araya kaynamaz, kâr eden reklamlar kenarda oturmaz; performansı bozulmak üzere olan reklamlar için yapılacaklar önüne serilir.

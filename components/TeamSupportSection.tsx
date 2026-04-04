@@ -5,14 +5,6 @@ import { Users, UserCheck, Shield, Target, Briefcase } from 'lucide-react';
 const TeamSupportSection: React.FC = () => {
   return (
     <section className="py-16 sm:py-20 lg:py-24 bg-[#080808] border-t border-white/5 relative overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-6 mb-8 sm:mb-12">
-        <div className="flex items-center gap-4 sm:gap-6">
-          <div className="bg-blue-900/40 px-4 py-1.5 rounded-sm text-[11px] sm:text-[12px] font-black mono text-blue-300 tracking-[0.2em] sm:tracking-[0.3em] uppercase border border-blue-500/20">
-            Araç: INTELLIGENCE LAYER
-          </div>
-          <div className="h-px bg-white/5 flex-1" />
-        </div>
-      </div>
 
       <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-600/5 rounded-full blur-[100px] -z-10 translate-x-1/2 -translate-y-1/2 opacity-50" />
 

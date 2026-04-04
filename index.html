@@ -1,44 +1,52 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RoaSell | Decision Intelligence System</title>
+    <title>Roasell</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
     <style>
-        body, html {
+        body,
+        html {
             font-family: 'Inter', sans-serif;
             background-color: #050505;
             color: #ffffff;
             overflow-x: hidden;
             max-width: 100vw;
         }
+
         #root {
             overflow-x: hidden;
             max-width: 100vw;
         }
+
         .mono {
             font-family: 'JetBrains Mono', monospace;
         }
+
         .glass {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
+
         .glow-blue {
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
         }
+
         .gradient-text {
             background: linear-gradient(to right, #ffffff, #a1a1aa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
     </style>
-<script type="importmap">
+    <script type="importmap">
 {
   "imports": {
     "react/": "https://esm.sh/react@^19.2.3/",
@@ -48,10 +56,76 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
+    <link rel="stylesheet" href="/index.css">
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (m, e, t, r, i, k, a) {
+            m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
+            m[i].l = 1 * new Date();
+            for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=107704412', 'ym');
+
+        ym(107704412, 'init', { ssr: true, webvisor: true, clickmap: true, ecommerce: "dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce: true, trackLinks: true });
+    </script>
+    <!-- /Yandex.Metrika counter -->
+
+    <!-- Facebook Pixel Init -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+
+        fbq('init', '170135295273206', {
+            client_user_agent: navigator.userAgent
+        });
+        // ⚠️ PageView BURAYA YAZILMAZ — body sonunda eventID ile çağrılır
+    </script>
+    <!-- End Facebook Pixel Init -->
 </head>
+
 <body>
+    <!-- Yandex.Metrika noscript -->
+    <noscript>
+        <div><img src="https://mc.yandex.ru/watch/107704412" style="position:absolute; left:-9999px;" alt="" /></div>
+    </noscript>
+    <!-- /Yandex.Metrika noscript -->
+    <!-- Facebook Pixel noscript (body başı) -->
+    <noscript>
+        <img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=170135295273206&ev=PageView&noscript=1" />
+    </noscript>
     <div id="root"></div>
-<script type="module" src="/index.tsx"></script>
+    <script type="module" src="/index.tsx"></script>
+
+    <!-- Facebook Pixel — PageView (body sonu, eventID ile) -->
+    <script>
+        (function () {
+            if (window.__PV_SENT__) return;
+            window.__PV_SENT__ = true;
+
+            function uuidv4() {
+                return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                    var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            }
+
+            var event_id = uuidv4();
+            if (window.fbq) {
+                fbq('track', 'PageView', {}, { eventID: event_id });
+            }
+        })();
+    </script>
+    <!-- End Facebook Pixel PageView -->
 </body>
+
 </html>

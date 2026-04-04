@@ -37,7 +37,10 @@ const ArbitrageSection: React.FC = () => {
               Ne satılıyor? cevabını verir, ne satmalıyım belirsizliğini bitirir.
             </p>
 
-            <button className="group inline-flex items-center gap-3 text-blue-500 font-black uppercase text-sm tracking-widest hover:text-white transition-all">
+            <button
+              onClick={() => window.dispatchEvent(new Event('openPaymentModal'))}
+              className="group inline-flex items-center gap-3 text-blue-500 font-black uppercase text-sm tracking-widest hover:text-white transition-all"
+            >
               ŞİMDİ BAŞLA
               <div className="w-9 h-9 rounded-full border border-blue-500/30 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-all">
                 <ArrowRight size={18} />

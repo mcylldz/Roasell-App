@@ -14,6 +14,10 @@ const ALLOWED_ORIGINS = [
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
+function escapeStripeQuery(val: string): string {
+    return val.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+}
+
 export const handler: Handler = async (event) => {
     const origin = event.headers['origin'] || event.headers['Origin'] || '';
     const corsOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : '';
@@ -38,7 +42,7 @@ export const handler: Handler = async (event) => {
     try {
         let parsed: any = {};
         try { parsed = JSON.parse(event.body || '{}'); } catch {
-            return { statusCode: 400, body: JSON.stringify({ error: 'Geçersiz istek.' }) };
+            return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ error: 'Geçersiz istek.' }) };
         }
 
         const { email } = parsed;
@@ -50,7 +54,7 @@ export const handler: Handler = async (event) => {
 
         // Find customer by email
         const customers = await stripe.customers.search({
-            query: `email:'${cleanEmail}'`,
+            query: `email:'${escapeStripeQuery(cleanEmail)}'`,
             limit: 1,
         });
 
@@ -150,6 +154,7 @@ export const handler: Handler = async (event) => {
         console.error('[get-subscription error]', error?.message);
         return {
             statusCode: 500,
+            headers: corsHeaders,
             body: JSON.stringify({ error: 'Bir hata oluştu. Lütfen tekrar deneyin.' }),
         };
     }

@@ -16,6 +16,10 @@ const ALLOWED_ORIGINS = [
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
+function escapeStripeQuery(val: string): string {
+    return val.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+}
+
 // Subscription statuses that mean a trial or subscription was successfully started
 const SUCCESSFUL_STATUSES = ['trialing', 'active', 'past_due', 'unpaid'];
 
@@ -53,30 +57,6 @@ async function hasSuccessfulSubscription(customerId: string): Promise<boolean> {
     return subs.data.some(s => SUCCESSFUL_STATUSES.includes(s.status));
 }
 
-// ─── Check if email already has a succeeded $1 PI in the last 24h ─────────────
-async function hasRecentSucceededPayment(email: string): Promise<boolean> {
-    const oneDayAgo = Math.floor(Date.now() / 1000) - 86_400;
-
-    const paymentIntents = await stripe.paymentIntents.search({
-        query: `status:'succeeded' AND metadata['customerEmail']:'${email}'`,
-        limit: 10,
-    });
-
-    return paymentIntents.data.some(pi => (pi.created ?? 0) >= oneDayAgo);
-}
-
-// ─── Check if card fingerprint already has a succeeded PI in the last 24h ─────
-async function hasRecentSucceededPaymentByCard(fingerprint: string): Promise<boolean> {
-    const oneDayAgo = Math.floor(Date.now() / 1000) - 86_400;
-
-    const paymentIntents = await stripe.paymentIntents.search({
-        query: `status:'succeeded' AND metadata['trial_card_fingerprint']:'${fingerprint}'`,
-        limit: 10,
-    });
-
-    return paymentIntents.data.some(pi => (pi.created ?? 0) >= oneDayAgo);
-}
-
 // ─── Handler ──────────────────────────────────────────────────────────────────
 export const handler: Handler = async (event) => {
     const origin = event.headers['origin'] || event.headers['Origin'] || '';
@@ -92,7 +72,7 @@ export const handler: Handler = async (event) => {
     }
 
     if (event.httpMethod !== 'POST') {
-        return { statusCode: 405, body: JSON.stringify({ error: 'Method Not Allowed' }) };
+        return { statusCode: 405, headers: corsHeaders, body: JSON.stringify({ error: 'Method Not Allowed' }) };
     }
 
     if (!ALLOWED_ORIGINS.includes(origin)) {
@@ -117,16 +97,19 @@ export const handler: Handler = async (event) => {
         }
 
         const cleanEmail = (email as string).toLowerCase().trim();
+        const cleanName = (name as string).trim();
+        const cleanPhone = typeof phone === 'string' ? phone.replace(/\D/g, '').slice(0, 15) : '';
+        const safeEmail = escapeStripeQuery(cleanEmail);
 
         // ── 1) Email check: block if an existing customer has a SUCCESSFUL subscription ──
         const existingByEmail = await stripe.customers.search({
-            query: `email:'${cleanEmail}'`,
+            query: `email:'${safeEmail}'`,
             limit: 5,
         });
 
         for (const c of existingByEmail.data) {
             if (await hasSuccessfulSubscription(c.id)) {
-                console.warn(`[Security] Duplicate trial attempt (email subscription): ${cleanEmail}`);
+                console.warn(`[Security] Duplicate trial attempt (email): ${cleanEmail}`);
                 return {
                     statusCode: 403,
                     headers: corsHeaders,
@@ -135,22 +118,11 @@ export const handler: Handler = async (event) => {
             }
         }
 
-        // ── 2) Email check: block if a succeeded $1 PI exists in the last 24h ──
-        if (await hasRecentSucceededPayment(cleanEmail)) {
-            console.warn(`[Security] Duplicate trial attempt (email recent PI): ${cleanEmail}`);
-            return {
-                statusCode: 403,
-                headers: corsHeaders,
-                body: JSON.stringify({ error: 'Bu e-posta adresiyle son 24 saat içinde zaten bir deneme başlatılmış.' }),
-            };
-        }
-
-        // ── 3) Card fingerprint checks ──
+        // ── 2) Card fingerprint check ──
         const paymentMethod = await stripe.paymentMethods.retrieve(paymentMethodId as string);
         const cardFingerprint = paymentMethod.card?.fingerprint;
 
         if (cardFingerprint) {
-            // 3a) Block on existing subscription
             const existingByCard = await stripe.customers.search({
                 query: `metadata['trial_card_fingerprint']:'${cardFingerprint}'`,
                 limit: 5,
@@ -158,7 +130,7 @@ export const handler: Handler = async (event) => {
 
             for (const c of existingByCard.data) {
                 if (await hasSuccessfulSubscription(c.id)) {
-                    console.warn(`[Security] Duplicate trial attempt (fingerprint subscription): ${cardFingerprint}`);
+                    console.warn(`[Security] Duplicate trial attempt (fingerprint): ${cardFingerprint}`);
                     return {
                         statusCode: 403,
                         headers: corsHeaders,
@@ -166,52 +138,76 @@ export const handler: Handler = async (event) => {
                     };
                 }
             }
-
-            // 3b) Block on recent succeeded PI
-            if (await hasRecentSucceededPaymentByCard(cardFingerprint)) {
-                console.warn(`[Security] Duplicate trial attempt (fingerprint recent PI): ${cardFingerprint}`);
-                return {
-                    statusCode: 403,
-                    headers: corsHeaders,
-                    body: JSON.stringify({ error: 'Bu kart ile son 24 saat içinde zaten bir deneme başlatılmış.' }),
-                };
-            }
         }
 
-        // ── 4) Create PaymentIntent with idempotency key ──
-        // Using email + paymentMethodId hash ensures the same user+card combo
-        // always returns the same PI instead of creating duplicates.
-        const idempotencyKey = crypto
+        // ── 3) Create Customer with PM attached ──
+        const idempotencyBase = crypto
             .createHash('sha256')
             .update(`trial_${cleanEmail}_${paymentMethodId}`)
             .digest('hex');
 
-        const trialPaymentIntent = await stripe.paymentIntents.create(
+        const customer = await stripe.customers.create(
             {
-                amount: 100, // $1.00 in cents
-                currency: 'usd',
+                name: cleanName,
+                email: cleanEmail,
+                phone: cleanPhone || undefined,
                 payment_method: paymentMethodId as string,
-                description: '3 Günlük Deneme Ücreti',
-                statement_descriptor_suffix: 'ROASELL DENEME',
+                invoice_settings: { default_payment_method: paymentMethodId as string },
                 metadata: {
                     customerEmail: cleanEmail,
-                    customerName: (name as string).trim(),
-                    customerPhone: typeof phone === 'string' ? phone.replace(/\D/g, '').slice(0, 15) : '',
-                    paymentMethodId: paymentMethodId as string,
+                    customerName: cleanName,
+                    customerPhone: cleanPhone,
                     ...(cardFingerprint ? { trial_card_fingerprint: cardFingerprint } : {}),
                 },
             },
-            {
-                idempotencyKey,
-            }
+            { idempotencyKey: `customer_${idempotencyBase}` },
         );
+
+        // ── 4) Get product ID from subscription price (needed for $1 invoice item) ──
+        const subscriptionPrice = await stripe.prices.retrieve(process.env.STRIPE_PRICE_ID as string);
+
+        // ── 5) Create Subscription: 3-day trial + $1 setup fee on first invoice ──
+        //   The $1 is part of the subscription's first invoice (not a standalone PI).
+        //   3DS authentication here creates a recurring mandate for the subscription,
+        //   so the $47 charge after trial ends won't require 3DS again.
+        const subscription = await stripe.subscriptions.create(
+            {
+                customer: customer.id,
+                items: [{ price: process.env.STRIPE_PRICE_ID }],
+                trial_period_days: 3,
+                add_invoice_items: [{
+                    price_data: {
+                        currency: 'usd',
+                        product: subscriptionPrice.product as string,
+                        unit_amount: 100, // $1.00
+                    },
+                }],
+                payment_behavior: 'default_incomplete',
+                payment_settings: {
+                    payment_method_types: ['card'],
+                    save_default_payment_method: 'on_subscription',
+                },
+                expand: ['latest_invoice.payment_intent'],
+                metadata: {
+                    customerEmail: cleanEmail,
+                    customerName: cleanName,
+                },
+            },
+            { idempotencyKey: `subscription_${idempotencyBase}` },
+        );
+
+        const invoice = subscription.latest_invoice as Stripe.Invoice;
+        const pi = invoice.payment_intent as Stripe.PaymentIntent;
+
+        console.log(`[create-subscription] customer=${customer.id} sub=${subscription.id} for ${cleanEmail}`);
 
         return {
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
-                clientSecret: trialPaymentIntent.client_secret,
-                paymentIntentId: trialPaymentIntent.id,
+                clientSecret: pi.client_secret,
+                subscriptionId: subscription.id,
+                customerId: customer.id,
             }),
         };
     } catch (error: any) {

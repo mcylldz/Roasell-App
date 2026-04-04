@@ -38,7 +38,7 @@ export const handler: Handler = async (event) => {
     try {
         let parsed: any = {};
         try { parsed = JSON.parse(event.body || '{}'); } catch {
-            return { statusCode: 400, body: JSON.stringify({ error: 'Geçersiz istek.' }) };
+            return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ error: 'Geçersiz istek.' }) };
         }
 
         const { email, subscriptionId } = parsed;
@@ -52,23 +52,17 @@ export const handler: Handler = async (event) => {
 
         const cleanEmail = email.toLowerCase().trim();
 
-        // Verify customer owns this subscription (security check)
-        const customers = await stripe.customers.search({
-            query: `email:'${cleanEmail}'`,
-            limit: 1,
-        });
+        // Retrieve subscription first, then verify the owning customer's email matches
+        const subscription = await stripe.subscriptions.retrieve(subscriptionId);
 
-        if (customers.data.length === 0) {
+        const customer = await stripe.customers.retrieve(subscription.customer as string) as Stripe.Customer;
+
+        if (customer.deleted) {
             return { statusCode: 404, headers: corsHeaders, body: JSON.stringify({ error: 'Müşteri bulunamadı.' }) };
         }
 
-        const customer = customers.data[0];
-
-        // Retrieve subscription and verify it belongs to this customer
-        const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-
-        if (subscription.customer !== customer.id) {
-            console.warn(`[Security] Cancel attempt mismatch: email ${cleanEmail}, sub customer ${subscription.customer}`);
+        if ((customer.email || '').toLowerCase() !== cleanEmail) {
+            console.warn(`[Security] Cancel attempt mismatch: email ${cleanEmail}, customer email ${customer.email}`);
             return { statusCode: 403, headers: corsHeaders, body: JSON.stringify({ error: 'Bu abonelik bu hesaba ait değil.' }) };
         }
 
@@ -113,6 +107,7 @@ export const handler: Handler = async (event) => {
         console.error('[cancel-subscription error]', error?.message);
         return {
             statusCode: 500,
+            headers: corsHeaders,
             body: JSON.stringify({ error: 'İptal işlemi sırasında bir hata oluştu. Lütfen tekrar deneyin.' }),
         };
     }
