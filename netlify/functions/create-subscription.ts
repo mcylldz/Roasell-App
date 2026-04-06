@@ -216,6 +216,7 @@ export const handler: Handler = async (event) => {
                 customer: customer.id,
                 items: [{ price: process.env.STRIPE_PRICE_ID }],
                 trial_period_days: 3,
+                default_payment_method: paymentMethodId as string,
                 payment_settings: {
                     payment_method_types: ['card'],
                     save_default_payment_method: 'on_subscription',
