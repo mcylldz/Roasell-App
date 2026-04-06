@@ -205,10 +205,7 @@ export const handler: Handler = async (event) => {
             );
         }
 
-        // ── 4) Get product ID from subscription price (needed for $1 invoice item) ──
-        const subscriptionPrice = await stripe.prices.retrieve(process.env.STRIPE_PRICE_ID as string);
-
-        // ── 5) Create Subscription: 3-day trial + $1 setup fee on first invoice ──
+        // ── 4) Create Subscription with 3-day trial (no upfront charge via subscription) ──
         const subIdempotencyBase = crypto
             .createHash('sha256')
             .update(`sub_${cleanEmail}_${paymentMethodId}`)
@@ -219,19 +216,10 @@ export const handler: Handler = async (event) => {
                 customer: customer.id,
                 items: [{ price: process.env.STRIPE_PRICE_ID }],
                 trial_period_days: 3,
-                add_invoice_items: [{
-                    price_data: {
-                        currency: 'usd',
-                        product: subscriptionPrice.product as string,
-                        unit_amount: 100, // $1.00
-                    },
-                }],
-                payment_behavior: 'default_incomplete',
                 payment_settings: {
                     payment_method_types: ['card'],
                     save_default_payment_method: 'on_subscription',
                 },
-                expand: ['latest_invoice.payment_intent'],
                 metadata: {
                     customerEmail: cleanEmail,
                     customerName: cleanName,
@@ -240,8 +228,33 @@ export const handler: Handler = async (event) => {
             { idempotencyKey: `subscription_${subIdempotencyBase}` },
         );
 
-        const invoice = subscription.latest_invoice as Stripe.Invoice;
-        const pi = invoice.payment_intent as Stripe.PaymentIntent;
+        // ── 5) Create separate $1 PaymentIntent for the trial activation fee ──
+        const piIdempotencyBase = crypto
+            .createHash('sha256')
+            .update(`pi_${cleanEmail}_${paymentMethodId}_${subscription.id}`)
+            .digest('hex');
+
+        const paymentIntent = await stripe.paymentIntents.create(
+            {
+                amount: 100, // $1.00
+                currency: 'usd',
+                customer: customer.id,
+                payment_method: paymentMethodId as string,
+                setup_future_usage: 'off_session',
+                payment_method_options: {
+                    card: {
+                        request_three_d_secure: 'any',
+                    },
+                },
+                metadata: {
+                    subscriptionId: subscription.id,
+                    customerEmail: cleanEmail,
+                    customerName: cleanName,
+                    type: 'trial_activation_fee',
+                },
+            },
+            { idempotencyKey: `pi_trial_${piIdempotencyBase}` },
+        );
 
         console.log(`[create-subscription] customer=${customer.id} sub=${subscription.id} for ${cleanEmail}`);
 
@@ -249,7 +262,7 @@ export const handler: Handler = async (event) => {
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
-                clientSecret: pi.client_secret,
+                clientSecret: paymentIntent.client_secret,
                 subscriptionId: subscription.id,
                 customerId: customer.id,
             }),
